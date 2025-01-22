@@ -1,0 +1,104 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id             String          @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  supabaseUserId String          @unique @map("supabaseUser_id")
+  name           String
+  role           UserRole
+  createdAt      DateTime        @default(now()) @map("created_at")
+  updatedAt      DateTime        @updatedAt @map("updated_at")
+  moltArticles   MoltArticle[]
+  recipeArticles RecipeArticle[]
+  userActions    UserAction[]
+
+  @@map("users")
+}
+
+model MoltArticle {
+  id             String          @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  status         Status
+  moltRole       MoltRole
+  title          String
+  temperature    Int
+  time           Int
+  material       String
+  tips           String
+  likes          Int             @default(0)
+  saves          Int             @default(0)
+  userId         String          @db.Uuid
+  createdAt      DateTime        @default(now()) @map("created_at")
+  updatedAt      DateTime        @updatedAt @map("updated_at")
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recipeArticles RecipeArticle[] @relation("RecipeArticleMoltArticles")
+  userActions    UserAction[]    @relation("MoltArticleActions")
+
+  @@map("molt_articles")
+}
+
+model RecipeArticle {
+  id            String       @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  status        Status
+  title         String
+  material      String
+  tips          String
+  likes         Int          @default(0)
+  saves         Int          @default(0)
+  userId        String       @db.Uuid
+  createdAt     DateTime     @default(now()) @map("created_at")
+  updatedAt     DateTime     @updatedAt @map("updated_at")
+  moltArticleId String       @db.Uuid
+  moltArticle   MoltArticle  @relation("RecipeArticleMoltArticles", fields: [moltArticleId], references: [id], onDelete: Cascade)
+  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userActions   UserAction[] @relation("RecipeArticleActions")
+
+  @@map("recipe_articles")
+}
+
+model UserAction {
+  id              String          @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  userId          String          @db.Uuid
+  articleCategory ArticleCategory
+  moltArticleId   String?         @db.Uuid
+  recipeArticleId String?         @db.Uuid
+  actionType      ActionType
+  createdAt       DateTime        @default(now()) @map("created_at")
+  updatedAt       DateTime        @updatedAt @map("updated_at")
+  moltArticle     MoltArticle?    @relation("MoltArticleActions", fields: [moltArticleId], references: [id], onDelete: Cascade, map: "user_actions_moltArticle_fkey")
+  recipeArticle   RecipeArticle?  @relation("RecipeArticleActions", fields: [recipeArticleId], references: [id], onDelete: Cascade, map: "user_actions_recipeArticle_fkey")
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_actions")
+}
+
+enum UserRole {
+  MEMBER
+  ADMIN
+}
+
+enum Status {
+  DRAFT
+  PUBLIC
+}
+
+enum MoltRole {
+  MAIN
+  SUB
+}
+
+enum ActionType {
+  LIKE
+  SAVE
+}
+
+enum ArticleCategory {
+  MOLT
+  RECIPE
+}
