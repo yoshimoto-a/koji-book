@@ -15,17 +15,17 @@ model User {
   role           UserRole
   createdAt      DateTime        @default(now()) @map("created_at")
   updatedAt      DateTime        @updatedAt @map("updated_at")
-  moltArticles   MoltArticle[]
+  maltArticles   MaltArticle[]
   recipeArticles RecipeArticle[]
-  userActions    UserAction[]
-
+  maltUserActions    MaltUserAction[]
+  recipeUserActions  RecipeUserAction[]
   @@map("users")
 }
 
-model MoltArticle {
+model MaltArticle {
   id             String          @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   status         Status
-  moltRole       MoltRole
+  maltRole       MaltRole
   title          String
   temperature    Int
   time           Int
@@ -37,10 +37,10 @@ model MoltArticle {
   createdAt      DateTime        @default(now()) @map("created_at")
   updatedAt      DateTime        @updatedAt @map("updated_at")
   user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  recipeArticles RecipeArticle[] @relation("RecipeArticleMoltArticles")
-  userActions    UserAction[]    @relation("MoltArticleActions")
+  recipeArticles RecipeArticle[] 
+  maltUserActions    MaltUserAction[] 
 
-  @@map("molt_articles")
+  @@map("malt_articles")
 }
 
 model RecipeArticle {
@@ -54,28 +54,39 @@ model RecipeArticle {
   userId        String       @db.Uuid
   createdAt     DateTime     @default(now()) @map("created_at")
   updatedAt     DateTime     @updatedAt @map("updated_at")
-  moltArticleId String       @db.Uuid
-  moltArticle   MoltArticle  @relation("RecipeArticleMoltArticles", fields: [moltArticleId], references: [id], onDelete: Cascade)
+  maltArticleId String       @db.Uuid
+  maltArticle   MaltArticle  @relation(fields: [maltArticleId], references: [id], onDelete: Cascade)
   user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userActions   UserAction[] @relation("RecipeArticleActions")
+  RecipeUserActions   RecipeUserAction[] 
 
   @@map("recipe_articles")
 }
 
-model UserAction {
+model MaltUserAction {
   id              String          @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   userId          String          @db.Uuid
-  articleCategory ArticleCategory
-  moltArticleId   String?         @db.Uuid
-  recipeArticleId String?         @db.Uuid
+  maltArticleId   String         @db.Uuid
   actionType      ActionType
   createdAt       DateTime        @default(now()) @map("created_at")
   updatedAt       DateTime        @updatedAt @map("updated_at")
-  moltArticle     MoltArticle?    @relation("MoltArticleActions", fields: [moltArticleId], references: [id], onDelete: Cascade, map: "user_actions_moltArticle_fkey")
-  recipeArticle   RecipeArticle?  @relation("RecipeArticleActions", fields: [recipeArticleId], references: [id], onDelete: Cascade, map: "user_actions_recipeArticle_fkey")
+  maltArticle MaltArticle @relation(fields: [maltArticleId], references: [id], onDelete: Cascade)
   user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@map("user_actions")
+  @@map("malt_user_actions")
+  @@unique([userId, actionType, maltArticleId])
+}
+model RecipeUserAction {
+  id              String          @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  userId          String          @db.Uuid
+  recipeArticleId String          @db.Uuid
+  actionType      ActionType
+  createdAt       DateTime        @default(now()) @map("created_at")
+  updatedAt       DateTime        @updatedAt @map("updated_at")
+  recipeArticle   RecipeArticle  @relation(fields: [recipeArticleId], references: [id], onDelete: Cascade)
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("recipe_user_actions")
+  @@unique([userId, actionType, recipeArticleId])
 }
 
 enum UserRole {
@@ -88,7 +99,7 @@ enum Status {
   PUBLIC
 }
 
-enum MoltRole {
+enum MaltRole {
   MAIN
   SUB
 }
@@ -96,9 +107,4 @@ enum MoltRole {
 enum ActionType {
   LIKE
   SAVE
-}
-
-enum ArticleCategory {
-  MOLT
-  RECIPE
 }

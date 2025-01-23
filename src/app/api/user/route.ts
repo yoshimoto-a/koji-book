@@ -17,7 +17,13 @@ export const GET = async (request: NextRequest) => {
         userId: user.id,
       },
     });
-    const saves = await prisma.userAction.findMany({
+    const malts = await prisma.maltUserAction.findMany({
+      where: {
+        userId: user.id,
+        actionType: "SAVE",
+      },
+    });
+    const recipes = await prisma.recipeUserAction.findMany({
       where: {
         userId: user.id,
         actionType: "SAVE",
@@ -29,9 +35,9 @@ export const GET = async (request: NextRequest) => {
         user,
         maltArticles,
         recipeArticles,
-        save: {
-          malt: saves.filter(item => item.articleCategory === "MALT"),
-          recipe: saves.filter(item => item.articleCategory === "RECIPE"),
+        saves: {
+          malts,
+          recipes,
         },
       },
       { status: 200 }

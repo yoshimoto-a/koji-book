@@ -7,7 +7,6 @@ interface Props {
   }>;
 }
 export const GET = async (request: NextRequest, { params }: Props) => {
-  console.log(params);
   const prisma = await buildPrisma();
   try {
     const { id } = await params;
