@@ -9,84 +9,86 @@ datasource db {
 }
 
 model User {
-  id             String          @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  supabaseUserId String          @unique @map("supabaseUser_id")
-  name           String
-  role           UserRole
-  createdAt      DateTime        @default(now()) @map("created_at")
-  updatedAt      DateTime        @updatedAt @map("updated_at")
-  maltArticles   MaltArticle[]
-  recipeArticles RecipeArticle[]
-  maltUserActions    MaltUserAction[]
-  recipeUserActions  RecipeUserAction[]
+  id                String             @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  supabaseUserId    String             @unique @map("supabaseUser_id")
+  name              String
+  role              UserRole
+  createdAt         DateTime           @default(now()) @map("created_at")
+  updatedAt         DateTime           @updatedAt @map("updated_at")
+  maltArticles      MaltArticle[]
+  maltUserActions   MaltUserAction[]
+  recipeArticles    RecipeArticle[]
+  recipeUserActions RecipeUserAction[]
+
   @@map("users")
 }
 
 model MaltArticle {
-  id             String          @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  status         Status
-  maltRole       MaltRole
-  title          String
-  temperature    Int
-  time           Int
-  material       String
-  tips           String
-  likes          Int             @default(0)
-  saves          Int             @default(0)
-  userId         String          @db.Uuid
-  createdAt      DateTime        @default(now()) @map("created_at")
-  updatedAt      DateTime        @updatedAt @map("updated_at")
-  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  recipeArticles RecipeArticle[] 
-  maltUserActions    MaltUserAction[] 
+  id              String           @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  status          Status
+  maltRole        MaltRole
+  title           String
+  temperature     Int
+  time            Int
+  material        String
+  tips            String
+  likes           Int              @default(0)
+  saves           Int              @default(0)
+  userId          String           @db.Uuid
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  maltUserActions MaltUserAction[]
+  recipeArticles  RecipeArticle[]
 
   @@map("malt_articles")
 }
 
 model RecipeArticle {
-  id            String       @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  status        Status
-  title         String
-  material      String
-  tips          String
-  likes         Int          @default(0)
-  saves         Int          @default(0)
-  userId        String       @db.Uuid
-  createdAt     DateTime     @default(now()) @map("created_at")
-  updatedAt     DateTime     @updatedAt @map("updated_at")
-  maltArticleId String       @db.Uuid
-  maltArticle   MaltArticle  @relation(fields: [maltArticleId], references: [id], onDelete: Cascade)
-  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  RecipeUserActions   RecipeUserAction[] 
+  id                String             @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  status            Status
+  title             String
+  material          String
+  tips              String
+  likes             Int                @default(0)
+  saves             Int                @default(0)
+  userId            String             @db.Uuid
+  createdAt         DateTime           @default(now()) @map("created_at")
+  updatedAt         DateTime           @updatedAt @map("updated_at")
+  maltArticleId     String             @db.Uuid
+  maltArticle       MaltArticle        @relation(fields: [maltArticleId], references: [id], onDelete: Cascade)
+  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  RecipeUserActions RecipeUserAction[]
 
   @@map("recipe_articles")
 }
 
 model MaltUserAction {
-  id              String          @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  userId          String          @db.Uuid
-  maltArticleId   String         @db.Uuid
-  actionType      ActionType
-  createdAt       DateTime        @default(now()) @map("created_at")
-  updatedAt       DateTime        @updatedAt @map("updated_at")
-  maltArticle MaltArticle @relation(fields: [maltArticleId], references: [id], onDelete: Cascade)
-  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id            String      @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  userId        String      @db.Uuid
+  maltArticleId String      @db.Uuid
+  actionType    ActionType
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+  maltArticle   MaltArticle @relation(fields: [maltArticleId], references: [id], onDelete: Cascade)
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@map("malt_user_actions")
   @@unique([userId, actionType, maltArticleId])
+  @@map("malt_user_actions")
 }
-model RecipeUserAction {
-  id              String          @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  userId          String          @db.Uuid
-  recipeArticleId String          @db.Uuid
-  actionType      ActionType
-  createdAt       DateTime        @default(now()) @map("created_at")
-  updatedAt       DateTime        @updatedAt @map("updated_at")
-  recipeArticle   RecipeArticle  @relation(fields: [recipeArticleId], references: [id], onDelete: Cascade)
-  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@map("recipe_user_actions")
+model RecipeUserAction {
+  id              String        @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  userId          String        @db.Uuid
+  recipeArticleId String        @db.Uuid
+  actionType      ActionType
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime      @updatedAt @map("updated_at")
+  recipeArticle   RecipeArticle @relation(fields: [recipeArticleId], references: [id], onDelete: Cascade)
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@unique([userId, actionType, recipeArticleId])
+  @@map("recipe_user_actions")
 }
 
 enum UserRole {
@@ -96,8 +98,10 @@ enum UserRole {
 
 enum Status {
   DRAFT
+  PENDING_APPROVAL
   PUBLIC
 }
+
 
 enum MaltRole {
   MAIN
