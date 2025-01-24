@@ -11,6 +11,8 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        dark_brown: "#AF8C69",
+        light_beige: "#EFE9E3",
       },
     },
   },
