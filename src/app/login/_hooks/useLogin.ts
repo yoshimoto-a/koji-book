@@ -4,7 +4,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { supabase } from "@/app/_utils/supabase";
 import toast from "react-hot-toast";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 interface LoginForm {
   email: string;
@@ -12,7 +12,7 @@ interface LoginForm {
 }
 
 export const useLogin = () => {
-  // const router = useRouter();
+  const router = useRouter();
   const schema = z.object({
     email: z
       .string()
@@ -43,7 +43,7 @@ export const useLogin = () => {
         throw new Error(`ログインに失敗しました:${error}`);
       }
       reset();
-      // router.replace("/admin/rooms");
+      router.replace("/malts");
     } catch (e) {
       console.error(e);
       alert(e);

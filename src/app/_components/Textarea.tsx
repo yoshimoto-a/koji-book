@@ -2,33 +2,18 @@
 import React from "react";
 import { UseFormRegisterReturn, FieldError } from "react-hook-form";
 
-type InputMode =
-  | "search"
-  | "email"
-  | "tel"
-  | "text"
-  | "url"
-  | "none"
-  | "numeric"
-  | "decimal"
-  | undefined;
-
 interface Props {
-  type: string;
   id: string;
   placeholder: string;
-  inputMode: InputMode;
   disabled: boolean;
   label: string;
   register: UseFormRegisterReturn;
   errors?: FieldError;
 }
 
-export const Input = ({
-  type,
+export const Textarea = ({
   id,
   placeholder,
-  inputMode,
   disabled,
   label,
   errors,
@@ -37,12 +22,10 @@ export const Input = ({
   return (
     <div className="pb-5">
       <label>{label}</label>
-      <input
+      <textarea
         className="bg-custom-gray py-2 px-3 mb-1 leading-tight w-full border-[1px] border-dark_brown text-dark_brown placeholder:text-dark_brown rounded-lg"
         id={id}
-        type={type}
         placeholder={placeholder}
-        inputMode={inputMode}
         disabled={disabled}
         {...register}
       />
