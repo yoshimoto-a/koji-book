@@ -7,28 +7,31 @@ export const GET = async (request: NextRequest) => {
   const prisma = await buildPrisma();
   try {
     const user = await getCurrentUser({ request });
-    const maltArticles = await prisma.maltArticle.findMany({
-      where: {
-        userId: user.id,
-      },
-    });
-    const recipeArticles = await prisma.recipeArticle.findMany({
-      where: {
-        userId: user.id,
-      },
-    });
-    const malts = await prisma.maltUserAction.findMany({
-      where: {
-        userId: user.id,
-        actionType: "SAVE",
-      },
-    });
-    const recipes = await prisma.recipeUserAction.findMany({
-      where: {
-        userId: user.id,
-        actionType: "SAVE",
-      },
-    });
+
+    const [maltArticles, recipeArticles, malts, recipes] = await Promise.all([
+      prisma.maltArticle.findMany({
+        where: {
+          userId: user.id,
+        },
+      }),
+      prisma.recipeArticle.findMany({
+        where: {
+          userId: user.id,
+        },
+      }),
+      prisma.maltUserAction.findMany({
+        where: {
+          userId: user.id,
+          actionType: "SAVE",
+        },
+      }),
+      prisma.recipeUserAction.findMany({
+        where: {
+          userId: user.id,
+          actionType: "SAVE",
+        },
+      }),
+    ]);
 
     return NextResponse.json<IndexResponse>(
       {
