@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { buildPrisma } from "@/app/_utils/prisma";
 import { buildError } from "../../_utils/buildError";
 import { getCurrentUser } from "../../_utils/getCurrentUser";
-import { IndexResponse } from "@/app/_types/Malts/IndexResponse";
+import { IndexResponse } from "@/app/_types/Categories/IndexResponse";
 
 export const GET = async (request: NextRequest) => {
   const prisma = await buildPrisma();

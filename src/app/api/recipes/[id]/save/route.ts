@@ -29,6 +29,16 @@ export const POST = async (request: NextRequest, { params }: Props) => {
           id: action.id,
         },
       });
+      await prisma.recipeArticle.update({
+        where: {
+          id,
+        },
+        data: {
+          saves: {
+            decrement: 1,
+          },
+        },
+      });
       return NextResponse.json(
         {
           message: "delete success!",
