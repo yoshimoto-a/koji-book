@@ -2,6 +2,8 @@ import { buildPrisma } from "@/app/_utils/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { IndexResponse } from "@/app/_types/Malt/IndexResponse";
 import { supabase } from "@/app/_utils/supabase";
+import { PutRequest } from "@/app/_types/Malt/PutRequest";
+
 interface Props {
   params: Promise<{
     id: string;
@@ -85,6 +87,39 @@ export const GET = async (request: NextRequest, { params }: Props) => {
       },
       { status: 200 }
     );
+  } catch (e) {
+    if (e instanceof Error) {
+      return NextResponse.json({ error: e.message }, { status: 400 });
+    }
+  }
+};
+
+export const PUT = async (request: NextRequest, { params }: Props) => {
+  const prisma = await buildPrisma();
+  try {
+    const { id } = await params;
+    const {
+      maltRole,
+      material,
+      status,
+      temperature,
+      time,
+      tips,
+      title,
+    }: PutRequest = await request.json();
+    await prisma.maltArticle.update({
+      where: { id },
+      data: {
+        maltRole,
+        material,
+        status,
+        temperature,
+        time,
+        tips,
+        title,
+      },
+    });
+    return NextResponse.json({ message: "success!" }, { status: 200 });
   } catch (e) {
     if (e instanceof Error) {
       return NextResponse.json({ error: e.message }, { status: 400 });

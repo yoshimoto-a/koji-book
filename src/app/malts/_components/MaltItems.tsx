@@ -58,7 +58,7 @@ export const MaltItems: React.FC<Props> = ({ maltsData }) => {
               push(`malts/${maltArticle.article.id}`);
             }}
           >
-            作り方を見る
+            材料・作り方を見る
           </Button>
         </div>
       ))}
