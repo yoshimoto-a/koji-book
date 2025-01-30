@@ -1,21 +1,26 @@
 "use client";
 
 import { Button } from "@/app/_components/Button";
-import { useAddAritcleForm } from "../_hooks/useAddAritcleForm";
+import { useEditAritcleForm } from "../_hooks/useEditArticleForm";
 import { Input } from "@/app/_components/Input";
 import { Textarea } from "@/app/_components/Textarea";
 import Select from "react-select";
 import { Controller } from "react-hook-form";
 import { Status } from "@prisma/client";
+import { useRouter } from "next/navigation";
+import { IndexResponse } from "@/app/_types/Malt/IndexResponse";
 type Option = { value: Status; label: string };
-
-export const ArticleForm: React.FC = () => {
-  const { register, control, handleSubmit, errors, isSubmitting } =
-    useAddAritcleForm();
-
+interface Props {
+  data: IndexResponse;
+}
+export const ArticleForm: React.FC<Props> = ({ data }) => {
+  const { register, control, handleSubmit, errors, isSubmitting, reset } =
+    useEditAritcleForm({ data: data.MaltArticle });
+  const { push } = useRouter();
   const options: Option[] = [
     { value: Status.DRAFT, label: "下書き保存" },
     { value: Status.PENDING_APPROVAL, label: "投稿申請" },
+    { value: Status.PUBLIC, label: "公開中" },
   ];
   return (
     <form onSubmit={handleSubmit} className="pt-10 flex flex-col gap-5">
@@ -88,11 +93,20 @@ export const ArticleForm: React.FC = () => {
           )}
         />
         {errors.status && (
-          <p className="text-sm text-red-500">{errors.status.message}</p>
+          <p className="text-sm text-red-500 ">{errors.status.message}</p>
         )}
       </div>
 
       <Button type="submit">保存</Button>
+      <Button
+        type="button"
+        onClick={() => {
+          reset();
+          push(`/malts/${data.MaltArticle.id}`);
+        }}
+      >
+        キャンセル
+      </Button>
     </form>
   );
 };

@@ -2,10 +2,16 @@ import { buildPrisma } from "@/app/_utils/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { IndexResponse } from "@/app/_types/Mypage/IndexResponse";
 import { getCurrentUser } from "../_utils/getCurrentUser";
-
 export const GET = async (request: NextRequest) => {
   const prisma = await buildPrisma();
   try {
+    const token = request.headers.get("Authorization");
+    if (!token) {
+      return NextResponse.json(
+        { message: "token is not found" },
+        { status: 201 }
+      );
+    }
     const user = await getCurrentUser({ request });
 
     const [maltArticles, recipeArticles, malts, recipes] = await Promise.all([

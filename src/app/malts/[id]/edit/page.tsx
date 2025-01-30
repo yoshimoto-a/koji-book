@@ -1,13 +1,11 @@
 import { IndexResponse } from "@/app/_types/Malt/IndexResponse";
-import { MaltContent } from "./_components/MaltContent";
-
+import { ArticleForm } from "./_components/AriticleForm";
 interface Props {
   params: Promise<{
     id: string;
   }>;
 }
-
-export default async function Page({ params }: Props) {
+export default async function EditPage({ params }: Props) {
   const { id } = await params;
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/malts/${id}`
@@ -16,8 +14,8 @@ export default async function Page({ params }: Props) {
 
   return (
     <div className="max-w-md mx-auto py-10 px-5">
-      <div className="flex justify-end pb-5"></div>
-      <MaltContent initialValue={data} id={id} />
+      <h2 className="text-2xl">編集する</h2>
+      <ArticleForm data={data} />
     </div>
   );
 }
