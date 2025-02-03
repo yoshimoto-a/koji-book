@@ -17,17 +17,20 @@ export const RecipeContent: React.FC<Props> = ({ initialValue, id }) => {
   const { data, error, mutate } = useRecipe({ initialValue, id });
   const { session } = useSupabaseSession();
   const { push } = useRouter();
-  const { data: user, mutate: updateUser } = useUser();
+  const { data: userData, error: userError, mutate: updateUser } = useUser();
+
   useEffect(() => {
     if (session) {
       mutate();
       updateUser();
     }
-  }, [session]);
+  }, [session, updateUser, mutate]);
 
   if (!data) return <div>読込み中...</div>;
+  if (!userData) return <div>読込み中...</div>;
   if (error) return <div>エラー が発生しました</div>;
-  console.log(data);
+  if (userError) return <div>エラー が発生しました</div>;
+
   return (
     <div>
       <div className="flex justify-between pb-5">
@@ -36,7 +39,8 @@ export const RecipeContent: React.FC<Props> = ({ initialValue, id }) => {
             一覧に戻る
           </Button>
         </div>
-        {!!user?.recipeArticles.find(article => article.id === id) ? (
+        {userData.user &&
+        userData.user.recipeArticles.find(article => article.id === id) ? (
           <div className="w-[150px]">
             <EditButton />
           </div>

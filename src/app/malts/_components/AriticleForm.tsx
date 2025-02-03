@@ -83,6 +83,7 @@ export const ArticleForm: React.FC = () => {
                 placeholder: () => "!text-dark_brown ",
                 dropdownIndicator: () => " !text-dark_brown",
                 indicatorSeparator: () => "!bg-dark_brown",
+                singleValue: () => "!text-dark_brown",
               }}
             />
           )}

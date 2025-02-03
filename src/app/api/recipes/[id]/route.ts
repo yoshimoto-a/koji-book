@@ -8,6 +8,7 @@ interface Props {
     id: string;
   }>;
 }
+//マイページから下書きにアクセスした場合に対応する必要がある→エンドポイントわける？
 export const GET = async (request: NextRequest, { params }: Props) => {
   const prisma = await buildPrisma();
   try {
@@ -15,20 +16,34 @@ export const GET = async (request: NextRequest, { params }: Props) => {
     const token = request.headers.get("Authorization") ?? "";
     const { data } = await supabase.auth.getUser(token);
 
+    const user = data.user
+      ? await prisma.user.findUnique({
+          where: {
+            supabaseUserId: data.user.id,
+          },
+        })
+      : null;
+
+    // ユーザーが認証されている場合の条件を追加
     const recipeArticle = await prisma.recipeArticle.findUnique({
       where: {
         id,
-        status: "PUBLIC",
+        OR: [
+          { status: "PUBLIC" },
+          { status: "DRAFT", userId: user ? user.id : undefined },
+        ],
       },
     });
 
+    // 記事が見つからない場合
     if (!recipeArticle) {
       return NextResponse.json(
         { message: "レシピが存在しません" },
         { status: 400 }
       );
     }
-    //ログインしてなければreturn
+
+    // 認証されていないユーザーへの対応
     if (!data.user) {
       return NextResponse.json<IndexResponse>(
         {
@@ -39,11 +54,7 @@ export const GET = async (request: NextRequest, { params }: Props) => {
         { status: 200 }
       );
     }
-    const user = await prisma.user.findUnique({
-      where: {
-        supabaseUserId: data.user.id,
-      },
-    });
+
     if (!user) {
       return NextResponse.json(
         {
@@ -52,6 +63,7 @@ export const GET = async (request: NextRequest, { params }: Props) => {
         { status: 404 }
       );
     }
+
     const [liked, saved] = await Promise.all([
       prisma.recipeUserAction.findUnique({
         where: {

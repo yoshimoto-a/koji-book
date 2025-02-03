@@ -8,6 +8,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useSupabaseSession } from "../_hooks/useSupabaseSession";
 import { Modal } from "./Modal";
 import { useState } from "react";
+import { Button } from "./Button";
 interface Props<T> {
   saved: boolean;
   savesCount: number;
@@ -27,9 +28,11 @@ export const Save = <T,>({
   const cleanedPath = pathName.includes("malts") ? "malts" : "recipes";
 
   const onClick = async () => {
-    if (!session) alert("レシピの保存はログインすると使える機能です。");
+    if (!session) {
+      setIsOpen(true);
+      return;
+    }
     try {
-      console.log(`/api/${cleanedPath}/${articleId}/save`);
       await api.post(`/api/${cleanedPath}/${articleId}/save`, {});
       mutate();
     } catch (error) {
@@ -46,28 +49,27 @@ export const Save = <T,>({
       </button>
       <div>{savesCount}</div>
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <div>
-          <p>レシピの保存はログインすると使える機能です。</p>
-          <p>
-            ユーザー登録がまだの方は
-            <div
-              onClick={() => push("/signup")}
-              className="bg-dark_brown text-white"
-            >
-              こちら
-            </div>
-            から登録してください。
+        <div className="bg-white py-10 px-5 rounded-md flex flex-col gap-5">
+          <p className="text-xl">
+            レシピの保存はログインすると使える機能です。
           </p>
-          <p>
-            ログインは
-            <div
-              onClick={() => push("/login")}
-              className="bg-dark_brown text-white"
-            >
-              こちら
-            </div>
-            です。
-          </p>
+          <p>ユーザー登録がまだの方はユーザー登録をお願いします。</p>
+          <Button
+            type="button"
+            onClick={() => push("/signup")}
+            className="bg-dark_brown text-white"
+          >
+            ユーザー登録
+          </Button>
+
+          <p>ログインは下のボタンからお願いします。 </p>
+          <Button
+            type="button"
+            onClick={() => push("/login")}
+            className="bg-dark_brown text-white"
+          >
+            ログインする
+          </Button>
         </div>
       </Modal>
     </div>

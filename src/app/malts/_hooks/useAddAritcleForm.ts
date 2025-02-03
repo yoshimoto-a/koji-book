@@ -18,10 +18,10 @@ export const useAddAritcleForm = () => {
   const { push } = useRouter();
   const schema = z.object({
     title: z.string().min(1, { message: "必須です" }),
-    time: z.string().min(1, { message: "必須です" }),
+    time: z.number().min(1, { message: "必須です" }),
     tips: z.string().min(1, { message: "必須です" }),
     material: z.string().min(1, { message: "必須です" }),
-    temperature: z.string().min(1, { message: "必須です" }),
+    temperature: z.number().min(1, { message: "必須です" }),
     status: z.nativeEnum(Status, { required_error: "必須です" }),
   });
   const {
@@ -44,7 +44,6 @@ export const useAddAritcleForm = () => {
   });
 
   const onSubmit = async (formData: Form) => {
-    console.log(formData);
     try {
       const { material, temperature, time, tips, title, status } = formData;
       const body: PostRequest = {

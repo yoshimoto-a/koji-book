@@ -18,7 +18,7 @@ export const POST = async (request: NextRequest) => {
   }: PostRequest = await request.json();
 
   try {
-    const user = await getCurrentUser({ request });
+    const { user } = await getCurrentUser({ request });
 
     await prisma.maltArticle.create({
       data: {
