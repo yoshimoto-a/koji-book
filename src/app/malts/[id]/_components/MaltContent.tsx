@@ -17,13 +17,15 @@ export const MaltContent: React.FC<Props> = ({ initialValue, id }) => {
   const { data, error, mutate } = useMalt({ initialValue, id });
   const { session } = useSupabaseSession();
   const { push } = useRouter();
-  const { data: user } = useUser();
+  const { data: userData, error: userError } = useUser();
   useEffect(() => {
     if (session) mutate();
   }, [session, mutate]);
 
   if (!data) return <div>読込み中...</div>;
+  if (!userData) return <div>読込み中...</div>;
   if (error) return <div>エラー が発生しました</div>;
+  if (userError) return <div>エラー が発生しました</div>;
 
   return (
     <div>
@@ -33,7 +35,8 @@ export const MaltContent: React.FC<Props> = ({ initialValue, id }) => {
             一覧に戻る
           </Button>
         </div>
-        {!!user?.maltArticles.find(article => article.id === id) ? (
+        {userData.user &&
+        userData.user.maltArticles.find(article => article.id === id) ? (
           <div className="w-[150px]">
             <EditButton />
           </div>

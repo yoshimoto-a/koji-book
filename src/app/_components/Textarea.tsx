@@ -20,13 +20,14 @@ export const Textarea = ({
   register,
 }: Props) => {
   return (
-    <div className="pb-5">
+    <div className="">
       <label>{label}</label>
       <textarea
         className="bg-custom-gray py-2 px-3 mb-1 leading-tight w-full border-[1px] border-dark_brown text-dark_brown placeholder:text-dark_brown rounded-lg"
         id={id}
         placeholder={placeholder}
         disabled={disabled}
+        rows={5}
         {...register}
       />
       {errors && typeof errors.message === "string" && (

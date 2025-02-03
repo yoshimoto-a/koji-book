@@ -10,7 +10,7 @@ interface Props {
 export const PUT = async (request: NextRequest, { params }: Props) => {
   const prisma = await buildPrisma();
   try {
-    const user = await getCurrentUser({ request });
+    const { user } = await getCurrentUser({ request });
     if (user.role !== "ADMIN") {
       throw new Error("権限がありません");
     }

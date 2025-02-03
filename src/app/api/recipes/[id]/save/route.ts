@@ -12,7 +12,7 @@ export const POST = async (request: NextRequest, { params }: Props) => {
   const prisma = await buildPrisma();
   try {
     const { id } = await params;
-    const user = await getCurrentUser({ request });
+    const { user } = await getCurrentUser({ request });
 
     const action = await prisma.recipeUserAction.findUnique({
       where: {

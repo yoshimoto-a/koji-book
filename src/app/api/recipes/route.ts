@@ -9,7 +9,7 @@ export const POST = async (request: NextRequest) => {
   const prisma = await buildPrisma();
 
   try {
-    const user = await getCurrentUser({ request });
+    const { user } = await getCurrentUser({ request });
     const { material, status, tips, title, maltArticleId }: PostRequest =
       await request.json();
 

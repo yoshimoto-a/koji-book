@@ -45,8 +45,8 @@ export const MaltItems: React.FC<Props> = ({ maltsData }) => {
             </div>
           </div>
           <div className="flex justify-start gap-5">
-            <p>{maltArticle.article.temperature}度</p>
-            <p>{maltArticle.article.time}時間</p>
+            <p>発酵温度 : {maltArticle.article.temperature}度</p>
+            <p>発酵時間 : {maltArticle.article.time}時間</p>
           </div>
           <div className="">
             <h3>〇作り方</h3>

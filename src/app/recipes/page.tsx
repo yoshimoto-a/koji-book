@@ -1,4 +1,4 @@
-import { AddButton } from "./[id]/_components/AddButton";
+import { AddButton } from "../malts/_components/AddButton";
 import { IndexResponse } from "../_types/Recipes/IndexResponse";
 import { RecipeItems } from "./_components/RecipeItems";
 export default async function Recipes() {
@@ -9,9 +9,7 @@ export default async function Recipes() {
   return (
     <div className="max-w-md mx-auto py-10 px-5">
       <h2 className="text-xl pb-5">麹調味料を使ったレシピ</h2>
-      <div className="flex justify-end pb-10">
-        <AddButton />
-      </div>
+      <AddButton url="/recipes/new" />
       <RecipeItems recipeData={data} />
     </div>
   );
