@@ -1,5 +1,5 @@
 import { MaltArticle, RecipeArticle } from "@prisma/client";
-type RecipeArticleWithMalt = RecipeArticle & {
+export type RecipeArticleWithMalt = RecipeArticle & {
   maltArticle: MaltArticle;
 };
 
