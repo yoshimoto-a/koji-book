@@ -1,10 +1,15 @@
 import { IndexResponse } from "./_types/TopPage/IndexResponse";
 import { MaltContents } from "./_components/(lp)/MaltContents";
 import { RecipeContents } from "./_components/(lp)/RecipeContents";
-import { kleeOne } from "./layout";
+import { Klee_One } from "next/font/google";
+
+const kleeOne = Klee_One({ weight: "400", subsets: ["latin"] });
 export default async function Home() {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/top_page`
+    `${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/top_page`,
+    {
+      cache: "no-store", //キャッシュ無効化しないとSSGになってビルドエラー
+    }
   );
   const { maltArticles, recipeArticles }: IndexResponse = await response.json();
 
