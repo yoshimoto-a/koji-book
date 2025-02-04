@@ -2,7 +2,7 @@ import { IndexResponse } from "./_types/TopPage/IndexResponse";
 import { MaltContents } from "./_components/(lp)/MaltContents";
 import { RecipeContents } from "./_components/(lp)/RecipeContents";
 import { Klee_One } from "next/font/google";
-
+import { ButtonSection } from "./_components/(lp)/ButtonSection";
 const kleeOne = Klee_One({ weight: "400", subsets: ["latin"] });
 export default async function Home() {
   const response = await fetch(
@@ -20,16 +20,32 @@ export default async function Home() {
         <h1 className={`text-6xl ${kleeOne.className}`}>
           麹帳<span className="text-xs pl-2">-Koji Book-</span>
         </h1>
-        <div className="text-center leading-7">
+        <div className="text-center leading-7 pb-3">
           ログインしてレシピを投稿！ <br />
           ブックマーク機能で
           <br />
           作ってみたいレシピを保存🎵
         </div>
+        <ButtonSection />
       </div>
-      <div className="flex flex-col gap-10">
+
+      <div className="flex flex-col gap-10 pb-5">
         <MaltContents data={maltArticles} />
         <RecipeContents data={recipeArticles} />
+      </div>
+      <div className="pb-5">
+        <p className="text-center pb-4">
+          ログインするとレシピのブックマークや
+          <br />
+          投稿ができるようになります！
+          <br />
+          <span className="text-xs">
+            いいねはログインなしで出来るのでどんどんしてください🎵
+          </span>
+        </p>
+        <div className="flex gap-5 justify-center">
+          <ButtonSection />
+        </div>
       </div>
     </div>
   );
