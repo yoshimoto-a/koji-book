@@ -4,7 +4,9 @@ import { MaltItems } from "./_components/MaltItems";
 export default async function Malts() {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/malts`,
-    {}
+    {
+      cache: "no-store", //キャッシュ無効化しないとSSGになってビルドエラー
+    }
   );
   const data: IndexResponse = await response.json();
 

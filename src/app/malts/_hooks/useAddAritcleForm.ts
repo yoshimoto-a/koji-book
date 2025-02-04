@@ -13,6 +13,7 @@ interface Form {
   material: string;
   status: Status;
   temperature: number;
+  imageUrl: string | null;
 }
 export const useAddAritcleForm = () => {
   const { push } = useRouter();
@@ -23,12 +24,15 @@ export const useAddAritcleForm = () => {
     material: z.string().min(1, { message: "必須です" }),
     temperature: z.number().min(1, { message: "必須です" }),
     status: z.nativeEnum(Status, { required_error: "必須です" }),
+    imageUrl: z.string().nullable(),
   });
   const {
     register,
     handleSubmit,
     reset,
     control,
+    watch,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<Form>({
     resolver: zodResolver(schema),
@@ -45,7 +49,8 @@ export const useAddAritcleForm = () => {
 
   const onSubmit = async (formData: Form) => {
     try {
-      const { material, temperature, time, tips, title, status } = formData;
+      const { material, temperature, time, tips, title, status, imageUrl } =
+        formData;
       const body: PostRequest = {
         maltRole: "MAIN",
         title,
@@ -54,6 +59,7 @@ export const useAddAritcleForm = () => {
         material,
         status,
         temperature: Number(temperature),
+        imageUrl,
       };
       await api.post<PostRequest, { message: string }>("/api/malts", body);
       reset();
@@ -70,5 +76,7 @@ export const useAddAritcleForm = () => {
     handleSubmit: handleSubmit(onSubmit),
     errors,
     isSubmitting,
+    watch,
+    setValue,
   };
 };

@@ -10,6 +10,7 @@ interface Form {
   tips: string;
   material: string;
   status: Status;
+  imageUrl: string | null;
 }
 export const useEditAritcleForm = ({ data }: { data: RecipeArticle }) => {
   const { push } = useRouter();
@@ -18,11 +19,14 @@ export const useEditAritcleForm = ({ data }: { data: RecipeArticle }) => {
     tips: z.string().min(1, { message: "必須です" }),
     material: z.string().min(1, { message: "必須です" }),
     status: z.nativeEnum(Status, { required_error: "必須です" }),
+    imageUrl: z.string().nullable(),
   });
   const {
     register,
     handleSubmit,
     reset,
+    watch,
+    setValue,
     control,
     formState: { errors, isSubmitting },
   } = useForm<Form>({
@@ -33,17 +37,19 @@ export const useEditAritcleForm = ({ data }: { data: RecipeArticle }) => {
       tips: data.tips,
       title: data.title,
       status: data.status,
+      imageUrl: data.imageUrl,
     },
   });
 
   const onSubmit = async (formData: Form) => {
     console.log(formData);
     try {
-      const { material, tips, title, status } = formData;
+      const { material, tips, title, status, imageUrl } = formData;
       const body: PutRequest = {
         title,
         tips,
         material,
+        imageUrl,
         status,
       };
       await api.put<PutRequest, { message: string }>(
@@ -63,7 +69,9 @@ export const useEditAritcleForm = ({ data }: { data: RecipeArticle }) => {
     control,
     handleSubmit: handleSubmit(onSubmit),
     errors,
+    watch,
     isSubmitting,
     reset,
+    setValue,
   };
 };

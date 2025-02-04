@@ -13,6 +13,7 @@ interface Form {
   material: string;
   status: Status;
   maltArticleId: string;
+  imageUrl: string | null;
 }
 export const useAddAritcleForm = () => {
   const { push } = useRouter();
@@ -26,11 +27,14 @@ export const useAddAritcleForm = () => {
     material: z.string().min(1, { message: "必須です" }),
     status: z.nativeEnum(Status, { required_error: "必須です" }),
     maltArticleId: z.string(),
+    imageUrl: z.string().nullable(),
   });
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
+    watch,
     control,
     formState: { errors, isSubmitting },
   } = useForm<Form>({
@@ -47,13 +51,15 @@ export const useAddAritcleForm = () => {
 
   const onSubmit = async (formData: Form) => {
     try {
-      const { material, tips, title, status, maltArticleId } = formData;
+      const { material, tips, title, status, maltArticleId, imageUrl } =
+        formData;
       const body: PostRequest = {
         title,
         tips,
         material,
         status,
         maltArticleId,
+        imageUrl,
       };
       await api.post<PostRequest, { message: string }>(`/api/recipes`, body);
       reset();
@@ -77,6 +83,8 @@ export const useAddAritcleForm = () => {
     errors,
     isSubmitting,
     reset,
+    watch,
+    setValue,
     categories,
   };
 };

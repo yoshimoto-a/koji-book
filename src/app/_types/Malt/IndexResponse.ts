@@ -1,7 +1,8 @@
 import { MaltArticle, RecipeArticle } from "@prisma/client";
 export type IndexResponse = {
-  MaltArticle: MaltArticle;
-  RecipeArticles: RecipeArticle[];
+  maltArticle: MaltArticle;
+  recipeArticles: RecipeArticle[];
+  postedName: string;
   liked: boolean;
   saved: boolean;
 };

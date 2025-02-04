@@ -10,8 +10,14 @@ export const POST = async (request: NextRequest) => {
 
   try {
     const { user } = await getCurrentUser({ request });
-    const { material, status, tips, title, maltArticleId }: PostRequest =
-      await request.json();
+    const {
+      material,
+      status,
+      tips,
+      title,
+      maltArticleId,
+      imageUrl,
+    }: PostRequest = await request.json();
 
     await prisma.recipeArticle.create({
       data: {
@@ -21,6 +27,7 @@ export const POST = async (request: NextRequest) => {
         tips,
         title,
         maltArticleId,
+        imageUrl,
       },
     });
 
@@ -48,6 +55,7 @@ export const GET = async (request: NextRequest) => {
         maltArticle: true,
       },
     });
+
     //ログインしてなければreturn
     if (!data.user) {
       return NextResponse.json<IndexResponse>(
@@ -63,23 +71,10 @@ export const GET = async (request: NextRequest) => {
       );
     }
 
-    const user = await prisma.user.findUnique({
-      where: {
-        supabaseUserId: data.user.id,
-      },
-    });
+    const user = await getCurrentUser({ request });
 
-    if (!user) {
-      return NextResponse.json(
-        {
-          error: "user is not found!",
-        },
-        { status: 404 }
-      );
-    }
-
-    const actions = await prisma.maltUserAction.findMany({
-      where: { userId: user.id },
+    const actions = await prisma.recipeUserAction.findMany({
+      where: { userId: user.user.id },
     });
 
     return NextResponse.json<IndexResponse>(
@@ -91,12 +86,12 @@ export const GET = async (request: NextRequest) => {
             like: !!actions.find(
               action =>
                 action.actionType === "LIKE" &&
-                action.maltArticleId === article.id
+                action.recipeArticleId === article.id
             ),
             save: !!actions.find(
               action =>
                 action.actionType === "SAVE" &&
-                action.maltArticleId === article.id
+                action.recipeArticleId === article.id
             ),
           };
         }),

@@ -16,6 +16,7 @@
     "@hookform/resolvers": "^3.10.0",
     "@prisma/client": "^6.2.1",
     "@supabase/supabase-js": "^2.48.1",
+    "browser-image-compression": "^2.0.2",
     "next": "15.1.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -24,6 +25,7 @@
     "react-modal": "^3.16.3",
     "react-select": "^5.10.0",
     "swr": "^2.3.0",
+    "uuid": "^11.0.5",
     "zod": "^3.24.1"
   },
   "devDependencies": {

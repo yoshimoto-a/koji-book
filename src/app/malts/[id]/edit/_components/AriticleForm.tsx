@@ -9,13 +9,22 @@ import { Controller } from "react-hook-form";
 import { Status } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { IndexResponse } from "@/app/_types/Malt/IndexResponse";
+import { RecipeImage } from "@/app/_components/RecipeImage";
 type Option = { value: Status; label: string };
 interface Props {
   data: IndexResponse;
 }
 export const ArticleForm: React.FC<Props> = ({ data }) => {
-  const { register, control, handleSubmit, errors, isSubmitting, reset } =
-    useEditAritcleForm({ data: data.MaltArticle });
+  const {
+    register,
+    control,
+    handleSubmit,
+    errors,
+    setValue,
+    isSubmitting,
+    reset,
+    watch,
+  } = useEditAritcleForm({ data: data.maltArticle });
   const { push } = useRouter();
   const options: Option[] = [
     { value: Status.DRAFT, label: "下書き保存" },
@@ -24,6 +33,11 @@ export const ArticleForm: React.FC<Props> = ({ data }) => {
   ];
   return (
     <form onSubmit={handleSubmit} className="pt-10 flex flex-col gap-5">
+      <RecipeImage
+        disabled={isSubmitting}
+        imageUrl={watch("imageUrl")}
+        onChangeImageUrl={v => setValue("imageUrl", v)}
+      />
       <Input
         label="タイトル"
         disabled={isSubmitting}
@@ -102,7 +116,7 @@ export const ArticleForm: React.FC<Props> = ({ data }) => {
         type="button"
         onClick={() => {
           reset();
-          push(`/malts/${data.MaltArticle.id}`);
+          push(`/malts/${data.maltArticle.id}`);
         }}
       >
         キャンセル

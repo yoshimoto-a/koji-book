@@ -15,17 +15,18 @@ export const GET = async (request: NextRequest, { params }: Props) => {
     const { id } = await params;
     const token = request.headers.get("Authorization") ?? "";
     const { data } = await supabase.auth.getUser(token);
-    const MaltArticle = await prisma.maltArticle.findUnique({
+    const maltArticle = await prisma.maltArticle.findUnique({
       where: {
         id,
         status: "PUBLIC",
       },
       include: {
         recipeArticles: true,
+        user: true,
       },
     });
 
-    if (!MaltArticle) {
+    if (!maltArticle) {
       return NextResponse.json(
         { message: "麹調味料データが存在しません" },
         { status: 400 }
@@ -35,8 +36,9 @@ export const GET = async (request: NextRequest, { params }: Props) => {
     if (!data.user) {
       return NextResponse.json<IndexResponse>(
         {
-          MaltArticle,
-          RecipeArticles: MaltArticle.recipeArticles,
+          maltArticle,
+          recipeArticles: maltArticle.recipeArticles,
+          postedName: maltArticle.user.name,
           liked: false,
           saved: false,
         },
@@ -80,8 +82,9 @@ export const GET = async (request: NextRequest, { params }: Props) => {
 
     return NextResponse.json<IndexResponse>(
       {
-        MaltArticle,
-        RecipeArticles: MaltArticle.recipeArticles,
+        maltArticle,
+        recipeArticles: maltArticle.recipeArticles,
+        postedName: maltArticle.user.name,
         liked: liked !== null,
         saved: saved !== null,
       },
@@ -98,6 +101,7 @@ export const PUT = async (request: NextRequest, { params }: Props) => {
   const prisma = await buildPrisma();
   try {
     const { id } = await params;
+    console.log(request);
     const {
       maltRole,
       material,
@@ -106,7 +110,9 @@ export const PUT = async (request: NextRequest, { params }: Props) => {
       time,
       tips,
       title,
+      imageUrl,
     }: PutRequest = await request.json();
+
     await prisma.maltArticle.update({
       where: { id },
       data: {
@@ -117,6 +123,7 @@ export const PUT = async (request: NextRequest, { params }: Props) => {
         time,
         tips,
         title,
+        imageUrl,
       },
     });
     return NextResponse.json({ message: "success!" }, { status: 200 });

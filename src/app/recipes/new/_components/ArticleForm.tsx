@@ -7,11 +7,20 @@ import { Textarea } from "@/app/_components/Textarea";
 import Select from "react-select";
 import { Controller } from "react-hook-form";
 import { Status } from "@prisma/client";
+import { RecipeImage } from "@/app/_components/RecipeImage";
 type Option = { value: Status; label: string };
 
 export const ArticleForm: React.FC = () => {
-  const { register, control, handleSubmit, errors, isSubmitting, categories } =
-    useAddAritcleForm();
+  const {
+    register,
+    control,
+    handleSubmit,
+    setValue,
+    errors,
+    isSubmitting,
+    categories,
+    watch,
+  } = useAddAritcleForm();
 
   const options: Option[] = [
     { value: Status.DRAFT, label: "下書き保存" },
@@ -20,6 +29,11 @@ export const ArticleForm: React.FC = () => {
   return (
     <form onSubmit={handleSubmit} className="pt-10 flex flex-col gap-5">
       <div>
+        <RecipeImage
+          disabled={isSubmitting}
+          imageUrl={watch("imageUrl")}
+          onChangeImageUrl={v => setValue("imageUrl", v)}
+        />
         <label htmlFor="maltArticleId">使用する麹調味料</label>
         {categories && (
           <Controller

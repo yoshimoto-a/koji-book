@@ -37,6 +37,7 @@ model MaltArticle {
   userId          String           @db.Uuid
   createdAt       DateTime         @default(now()) @map("created_at")
   updatedAt       DateTime         @updatedAt @map("updated_at")
+  imageUrl        String?
   user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   maltUserActions MaltUserAction[]
   recipeArticles  RecipeArticle[]
@@ -56,6 +57,7 @@ model RecipeArticle {
   createdAt         DateTime           @default(now()) @map("created_at")
   updatedAt         DateTime           @updatedAt @map("updated_at")
   maltArticleId     String             @db.Uuid
+  imageUrl          String?
   maltArticle       MaltArticle        @relation(fields: [maltArticleId], references: [id], onDelete: Cascade)
   user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   RecipeUserActions RecipeUserAction[]
@@ -101,7 +103,6 @@ enum Status {
   PENDING_APPROVAL
   PUBLIC
 }
-
 
 enum MaltRole {
   MAIN
