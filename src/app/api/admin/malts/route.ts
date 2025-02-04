@@ -7,7 +7,7 @@ import { IndexResponse } from "@/app/_types/Admin/IndexResponse";
 export const GET = async (request: NextRequest) => {
   const prisma = await buildPrisma();
   try {
-    const user = await getCurrentUser({ request });
+    const { user } = await getCurrentUser({ request });
     if (user.role !== "ADMIN") {
       throw new Error("権限がありません");
     }

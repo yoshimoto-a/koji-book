@@ -6,4 +6,5 @@ export type PostRequest = {
   material: string;
   tips: string;
   maltArticleId: string;
+  imageUrl: string | null;
 };

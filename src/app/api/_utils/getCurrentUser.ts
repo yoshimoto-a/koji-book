@@ -16,9 +16,28 @@ export const getCurrentUser = async ({ request }: { request: NextRequest }) => {
     where: {
       supabaseUserId: data.user.id,
     },
+    include: {
+      maltArticles: true,
+      recipeArticles: {
+        include: {
+          maltArticle: true,
+        },
+      },
+      maltUserActions: {
+        include: {
+          maltArticle: true,
+        },
+      },
+      recipeUserActions: {
+        include: {
+          recipeArticle: true,
+        },
+      },
+    },
   });
   if (!user) {
     throw new Error("Unauthorized");
   }
-  return user;
+
+  return { user, email: data.user.email };
 };

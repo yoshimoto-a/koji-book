@@ -12,7 +12,7 @@ export const POST = async (request: NextRequest, { params }: Props) => {
   const prisma = await buildPrisma();
   try {
     const { id } = await params;
-    const user = await getCurrentUser({ request });
+    const { user } = await getCurrentUser({ request });
 
     const action = await prisma.maltUserAction.findUnique({
       where: {
@@ -23,10 +23,22 @@ export const POST = async (request: NextRequest, { params }: Props) => {
         },
       },
     });
+
+    //既に保存された場合はmaltUserAction消してデクリメント
     if (action) {
       await prisma.maltUserAction.delete({
         where: {
           id: action.id,
+        },
+      });
+      await prisma.maltArticle.update({
+        where: {
+          id,
+        },
+        data: {
+          saves: {
+            decrement: 1,
+          },
         },
       });
       return NextResponse.json(

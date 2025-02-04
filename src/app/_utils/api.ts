@@ -1,10 +1,8 @@
 import { supabase } from "./supabase";
 
 const getAccessToken = async () => {
-  const { data, error } = await supabase.auth.getSession();
-  if (error) throw new Error("セッション情報がありません");
-  if (!data.session) throw new Error("セッション情報がありません");
-  return data.session.access_token;
+  const { data } = await supabase.auth.getSession();
+  return data.session?.access_token || "";
 };
 export const api = {
   post: async <RequestType, ResponseType>(

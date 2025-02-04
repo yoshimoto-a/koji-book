@@ -8,4 +8,5 @@ export type PostRequest = {
   time: number;
   material: string;
   tips: string;
+  imageUrl: string | null;
 };
