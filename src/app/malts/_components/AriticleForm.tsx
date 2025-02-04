@@ -7,10 +7,13 @@ import { Textarea } from "@/app/_components/Textarea";
 import Select from "react-select";
 import { Controller } from "react-hook-form";
 import { Status } from "@prisma/client";
+import { RecipeImage } from "@/app/_components/RecipeImage";
+
 type Option = { value: Status; label: string };
 
 export const ArticleForm: React.FC = () => {
-  const { register, control, handleSubmit, errors, isSubmitting } =
+  const { register, control, handleSubmit, errors, isSubmitting ,watch,
+    setValue} =
     useAddAritcleForm();
 
   const options: Option[] = [
@@ -19,6 +22,11 @@ export const ArticleForm: React.FC = () => {
   ];
   return (
     <form onSubmit={handleSubmit} className="pt-10 flex flex-col gap-5">
+      <RecipeImage
+        imageUrl={watch("imageUrl")}
+        disabled={isSubmitting}
+        onChangeImageUrl={v => setValue("imageUrl", v)}
+      />
       <Input
         label="タイトル"
         disabled={isSubmitting}

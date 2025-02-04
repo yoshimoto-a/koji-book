@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/app/_components/Button";
 import { useRecipes } from "../_hooks/useRecipes";
 import { Malt } from "./Malt";
+import Image from "next/image";
 interface Props {
   recipeData: IndexResponse;
 }
@@ -28,6 +29,17 @@ export const RecipeItems: React.FC<Props> = ({ recipeData }) => {
           key={recipeArticle.article.id}
           className="bg-light_beige py-4 px-3 rounded-md flex flex-col gap-3"
         >
+          {recipeArticle.article.imageUrl && (
+            <div className="flex  justify-center">
+              <Image
+                alt={recipeArticle.article.title}
+                src={recipeArticle.article.imageUrl}
+                width={400}
+                height={400}
+                className="w-full h-44 object-contain"
+              />
+            </div>
+          )}
           <div className="">
             <Malt item={recipeArticle.malt} />
           </div>

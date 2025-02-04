@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/app/_components/Button";
 import { EditButton } from "@/app/malts/[id]/_components/EditButton";
 import { useUser } from "@/app/_hooks/useUser";
+import Image from "next/image";
 interface Props {
   id: string;
   initialValue: IndexResponse;
@@ -46,9 +47,23 @@ export const RecipeContent: React.FC<Props> = ({ initialValue, id }) => {
           </div>
         ) : null}
       </div>
+      <div className="flex justify-center py-2">
+        {data.recipeArticle.imageUrl && (
+          <Image
+            alt={data.recipeArticle.title}
+            src={data.recipeArticle.imageUrl}
+            width={400}
+            height={400}
+            className="w-full h-44 object-contain"
+          />
+        )}
+      </div>
 
-      <div className="flex justify-between">
-        <h3 className="text-2xl">{data.recipeArticle.title}</h3>
+      <div className="flex justify-between items-center pb-2">
+        <div className="">
+          <h3 className="text-2xl">{data.recipeArticle.title}</h3>
+          <div className="text-sm">投稿者:{data.postedName}</div>
+        </div>
         <div className="flex justify-end items-center gap-5">
           <Like
             articleId={id}
@@ -65,6 +80,15 @@ export const RecipeContent: React.FC<Props> = ({ initialValue, id }) => {
         </div>
       </div>
       <div className="flex flex-col gap-3 pb-5">
+        <div className="flex justify-start items-center">
+          <div
+            className="bg-dark_brown text-white py-1 px-2 rounded-sm inline-block text-sm cursor-pointer"
+            onClick={() => push(`/malts/${data.recipeArticle.maltArticleId}`)}
+          >
+            {data.maltTitle}
+          </div>
+        </div>
+
         <div>
           <h3 className="text-xl pb-2">〇材料</h3>
           <div className="whitespace-pre-wrap">

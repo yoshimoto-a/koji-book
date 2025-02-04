@@ -7,6 +7,7 @@ import { Like } from "@/app/_components/Like";
 import { Save } from "@/app/_components/Save";
 import { useRouter } from "next/navigation";
 import { Button } from "@/app/_components/Button";
+import Image from "next/image";
 interface Props {
   maltsData: IndexResponse;
 }
@@ -27,6 +28,17 @@ export const MaltItems: React.FC<Props> = ({ maltsData }) => {
           key={maltArticle.article.id}
           className="bg-light_beige py-2 px-3 rounded-md flex flex-col gap-5"
         >
+          {maltArticle.article.imageUrl && (
+            <div className="flex  justify-center">
+              <Image
+                alt={maltArticle.article.title}
+                src={maltArticle.article.imageUrl}
+                width={400}
+                height={400}
+                className="w-full h-44 object-contain"
+              />
+            </div>
+          )}
           <div className="flex justify-between items-center">
             <h3 className="text-xl">{maltArticle.article.title}</h3>
             <div className=" flex gap-5">

@@ -33,6 +33,10 @@ export const GET = async (request: NextRequest, { params }: Props) => {
           { status: "DRAFT", userId: user ? user.id : undefined },
         ],
       },
+      include: {
+        maltArticle: true,
+        user: true,
+      },
     });
 
     // 記事が見つからない場合
@@ -48,6 +52,8 @@ export const GET = async (request: NextRequest, { params }: Props) => {
       return NextResponse.json<IndexResponse>(
         {
           recipeArticle,
+          maltTitle: recipeArticle.maltArticle.title,
+          postedName: recipeArticle.user.name,
           liked: false,
           saved: false,
         },
@@ -85,7 +91,13 @@ export const GET = async (request: NextRequest, { params }: Props) => {
       }),
     ]);
     return NextResponse.json<IndexResponse>(
-      { recipeArticle, liked: liked !== null, saved: saved !== null },
+      {
+        recipeArticle,
+        maltTitle: recipeArticle.maltArticle.title,
+        postedName: recipeArticle.user.name,
+        liked: liked !== null,
+        saved: saved !== null,
+      },
       { status: 200 }
     );
   } catch (e) {
@@ -99,7 +111,8 @@ export const PUT = async (request: NextRequest, { params }: Props) => {
   const prisma = await buildPrisma();
   try {
     const { id } = await params;
-    const { material, status, tips, title }: PutRequest = await request.json();
+    const { material, status, tips, title, imageUrl }: PutRequest =
+      await request.json();
     await prisma.recipeArticle.update({
       where: { id },
       data: {
@@ -107,6 +120,7 @@ export const PUT = async (request: NextRequest, { params }: Props) => {
         status,
         tips,
         title,
+        imageUrl,
       },
     });
     return NextResponse.json({ message: "success!" }, { status: 200 });

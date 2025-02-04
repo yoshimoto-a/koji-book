@@ -13,7 +13,7 @@ export default async function Page({ params }: Props) {
     `${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/recipes/${id}`
   );
   const data: IndexResponse = await response.json();
-  console.log(data);
+
   return (
     <div className="max-w-md mx-auto py-10 px-5">
       <div className="flex justify-end pb-5"></div>

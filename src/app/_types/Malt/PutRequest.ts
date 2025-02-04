@@ -8,4 +8,5 @@ export type PutRequest = {
   time: number;
   material: string;
   tips: string;
+  imageUrl: string | null;
 };

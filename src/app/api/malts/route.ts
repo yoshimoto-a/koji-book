@@ -15,6 +15,7 @@ export const POST = async (request: NextRequest) => {
     time,
     tips,
     title,
+    imageUrl,
   }: PostRequest = await request.json();
 
   try {
@@ -30,6 +31,7 @@ export const POST = async (request: NextRequest) => {
         time,
         tips,
         title,
+        imageUrl,
       },
     });
 
@@ -69,23 +71,10 @@ export const GET = async (request: NextRequest) => {
       );
     }
 
-    const user = await prisma.user.findUnique({
-      where: {
-        supabaseUserId: data.user.id,
-      },
-    });
-
-    if (!user) {
-      return NextResponse.json(
-        {
-          error: "user is not found!",
-        },
-        { status: 404 }
-      );
-    }
+    const user = await getCurrentUser({ request });
 
     const actions = await prisma.maltUserAction.findMany({
-      where: { userId: user.id },
+      where: { userId: user.user.id },
     });
 
     return NextResponse.json<IndexResponse>(

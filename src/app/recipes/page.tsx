@@ -3,7 +3,10 @@ import { IndexResponse } from "../_types/Recipes/IndexResponse";
 import { RecipeItems } from "./_components/RecipeItems";
 export default async function Recipes() {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/recipes`
+    `${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/recipes`,
+    {
+      cache: "no-store", //キャッシュ無効化しないとSSGになってビルドエラー
+    }
   );
   const data: IndexResponse = await response.json();
   return (

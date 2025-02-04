@@ -5,4 +5,5 @@ export type PutRequest = {
   title: string;
   material: string;
   tips: string;
+  imageUrl: string | null;
 };
