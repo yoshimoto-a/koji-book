@@ -9,8 +9,8 @@ interface Props {
 export const RecipeContents: React.FC<Props> = ({ data }) => {
   return (
     <div>
-      <h2 className="text-lg pb-3">〇レシピの投稿</h2>
-      <div className=" flex justify-between items-center flex-wrap gap-3 pb-3">
+      <h2 className="text-lg pb-3 text-center">〇レシピの投稿</h2>
+      <div className=" flex justify-center items-center flex-wrap gap-2 pb-3">
         {data.slice(0, 4).map(article => (
           <NextLink
             href={`/recipes/${article.id}`}
@@ -23,10 +23,10 @@ export const RecipeContents: React.FC<Props> = ({ data }) => {
                 alt={article.title}
                 width={400}
                 height={400}
-                className="w-[170px] h-[100px] object-contain"
+                className="w-[150px] h-[100px] object-contain"
               />
             ) : (
-              <div className="w-[170px] h-[100px] border-dark_brown border-[1px] rounded-md flex justify-center items-center">
+              <div className="w-[150px] h-[100px] border-dark_brown border-[1px] rounded-md flex justify-center items-center">
                 No Image
               </div>
             )}

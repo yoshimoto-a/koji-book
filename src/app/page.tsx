@@ -14,7 +14,7 @@ export default async function Home() {
   const { maltArticles, recipeArticles }: IndexResponse = await response.json();
 
   return (
-    <div className="max-w-md mx-auto py-10 px-5">
+    <div className="max-w-md mx-auto py-10 px-2">
       <div className="flex flex-col gap-4 items-center pb-10">
         <p className="">麹に特化したレシピ共有アプリ</p>
         <h1 className={`text-6xl ${kleeOne.className}`}>

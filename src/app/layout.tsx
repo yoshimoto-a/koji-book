@@ -18,9 +18,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body className={`${notSansJp.className} antialiased text-dark_brown`}>
+      <body
+        className={`${notSansJp.className} antialiased text-dark_brown flex flex-col min-h-screen`}
+      >
         <Header />
-        <div className="pt-[70px]">{children}</div>
+        <div className="flex-grow pt-[70px]">{children}</div>
         <Footer />
       </body>
     </html>
