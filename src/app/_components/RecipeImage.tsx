@@ -68,15 +68,16 @@ export const RecipeImage: React.FC<Props> = ({
             type="button"
             onClick={() => fileInputRef.current?.click()}
             disabled={disabled}
-            className="flex items-center justify-center border border-dark_brown text-xs text-gray_text"
+            className="flex flex-col items-center justify-center border border-dark_brown text-xs text-gray_text w-full h-[200px] bg-light_beige rounded-md"
           >
             <Image
               alt="画像を選択する"
               width={400}
               height={400}
-              src="/dummy.png"
-              className="size-full object-contain"
+              src="/cameraIcon.svg"
+              className="w-1/3 object-contain"
             />
+            <p>料理の写真をのせる</p>
           </button>
         </div>
       )}
