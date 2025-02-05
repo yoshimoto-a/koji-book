@@ -10,6 +10,7 @@ import { Status } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { IndexResponse } from "@/app/_types/Recipe/IndexResponse";
 import { RecipeImage } from "@/app/_components/RecipeImage";
+
 type Option = { value: Status; label: string };
 interface Props {
   data: IndexResponse;
@@ -24,7 +25,10 @@ export const ArticleForm: React.FC<Props> = ({ data }) => {
     reset,
     watch,
     setValue,
-  } = useEditAritcleForm({ data: data.recipeArticle });
+    categories,
+  } = useEditAritcleForm({
+    data: data.recipeArticle,
+  });
   const { push } = useRouter();
   const options: Option[] = [
     { value: Status.DRAFT, label: "下書き保存" },
@@ -37,6 +41,32 @@ export const ArticleForm: React.FC<Props> = ({ data }) => {
         disabled={isSubmitting}
         onChangeImageUrl={v => setValue("imageUrl", v)}
       />
+      <div>
+        <label htmlFor="maltArticleId">使用する麹調味料</label>
+        {categories && (
+          <Controller
+            name="maltArticleId"
+            control={control}
+            render={({ field }) => (
+              <Select
+                options={categories}
+                value={categories.find(option => option.value === field.value)}
+                onChange={newValue => {
+                  field.onChange(newValue?.value);
+                }}
+                classNames={{
+                  control: () =>
+                    "!border-dark_brown !outline-none !text-dark_brown",
+                  placeholder: () => "!text-dark_brown ",
+                  dropdownIndicator: () => " !text-dark_brown",
+                  indicatorSeparator: () => "!bg-dark_brown",
+                  singleValue: () => "!text-dark_brown",
+                }}
+              />
+            )}
+          />
+        )}
+      </div>
       <Input
         label="タイトル"
         disabled={isSubmitting}
@@ -81,6 +111,7 @@ export const ArticleForm: React.FC<Props> = ({ data }) => {
                 placeholder: () => "!text-dark_brown ",
                 dropdownIndicator: () => " !text-dark_brown",
                 indicatorSeparator: () => "!bg-dark_brown",
+                singleValue: () => "!text-dark_brown",
               }}
             />
           )}

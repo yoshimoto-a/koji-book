@@ -1,3 +1,4 @@
+"use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -5,21 +6,29 @@ import { api } from "@/app/_utils/api";
 import { useRouter } from "next/navigation";
 import { RecipeArticle, Status } from "@prisma/client";
 import { PutRequest } from "@/app/_types/Recipe/PutRequest";
+import { useCategories } from "@/app/recipes/_hooks/useCategories";
+import { useEffect, useState } from "react";
 interface Form {
   title: string;
   tips: string;
   material: string;
   status: Status;
   imageUrl: string | null;
+  maltArticleId: string;
 }
 export const useEditAritcleForm = ({ data }: { data: RecipeArticle }) => {
   const { push } = useRouter();
+  const { data: categoriesData, error } = useCategories();
+  const [categories, setCategories] = useState<
+    null | { value: string; label: string }[]
+  >(null);
   const schema = z.object({
     title: z.string().min(1, { message: "必須です" }),
     tips: z.string().min(1, { message: "必須です" }),
     material: z.string().min(1, { message: "必須です" }),
     status: z.nativeEnum(Status, { required_error: "必須です" }),
     imageUrl: z.string().nullable(),
+    maltArticleId: z.string(),
   });
   const {
     register,
@@ -38,6 +47,7 @@ export const useEditAritcleForm = ({ data }: { data: RecipeArticle }) => {
       title: data.title,
       status: data.status,
       imageUrl: data.imageUrl,
+      maltArticleId: data.maltArticleId,
     },
   });
 
@@ -63,6 +73,15 @@ export const useEditAritcleForm = ({ data }: { data: RecipeArticle }) => {
       alert(error);
     }
   };
+  useEffect(() => {
+    if (!categoriesData) return;
+    setCategories(
+      categoriesData.maltArticles.map(malt => ({
+        value: malt.id,
+        label: malt.title,
+      }))
+    );
+  }, [categoriesData]);
 
   return {
     register,
@@ -73,5 +92,7 @@ export const useEditAritcleForm = ({ data }: { data: RecipeArticle }) => {
     isSubmitting,
     reset,
     setValue,
+    categories,
+    error,
   };
 };
