@@ -12,16 +12,22 @@ import { RecipeImage } from "@/app/_components/RecipeImage";
 type Option = { value: Status; label: string };
 
 export const ArticleForm: React.FC = () => {
-  const { register, control, handleSubmit, errors, isSubmitting ,watch,
-    setValue} =
-    useAddAritcleForm();
+  const {
+    register,
+    control,
+    handleSubmit,
+    errors,
+    isSubmitting,
+    watch,
+    setValue,
+  } = useAddAritcleForm();
 
   const options: Option[] = [
     { value: Status.DRAFT, label: "下書き保存" },
     { value: Status.PENDING_APPROVAL, label: "投稿申請" },
   ];
   return (
-    <form onSubmit={handleSubmit} className="pt-10 flex flex-col gap-5">
+    <form onSubmit={handleSubmit} className="pt-5 flex flex-col gap-5">
       <RecipeImage
         imageUrl={watch("imageUrl")}
         disabled={isSubmitting}

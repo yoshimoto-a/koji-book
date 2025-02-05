@@ -27,7 +27,7 @@ export const ArticleForm: React.FC = () => {
     { value: Status.PUBLIC, label: "公開する" },
   ];
   return (
-    <form onSubmit={handleSubmit} className="pt-10 flex flex-col gap-5">
+    <form onSubmit={handleSubmit} className="pt-5 flex flex-col gap-5">
       <div>
         <RecipeImage
           disabled={isSubmitting}
@@ -52,6 +52,7 @@ export const ArticleForm: React.FC = () => {
                   placeholder: () => "!text-dark_brown ",
                   dropdownIndicator: () => " !text-dark_brown",
                   indicatorSeparator: () => "!bg-dark_brown",
+                  singleValue: () => "!text-dark_brown",
                 }}
               />
             )}
@@ -106,6 +107,7 @@ export const ArticleForm: React.FC = () => {
                 placeholder: () => "!text-dark_brown ",
                 dropdownIndicator: () => " !text-dark_brown",
                 indicatorSeparator: () => "!bg-dark_brown",
+                singleValue: () => "!text-dark_brown",
               }}
             />
           )}
