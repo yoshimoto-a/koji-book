@@ -43,7 +43,6 @@ export const RecipeImage: React.FC<Props> = ({
           />
           <div className="flex justify-between gap-3">
             <Button
-              color="secondary"
               type="button"
               onClick={() => fileInputRef.current?.click()}
               className="px-3"
@@ -52,7 +51,6 @@ export const RecipeImage: React.FC<Props> = ({
               変更
             </Button>
             <Button
-              color="danger"
               type="button"
               onClick={deleteIcon}
               className="px-3 text-white"

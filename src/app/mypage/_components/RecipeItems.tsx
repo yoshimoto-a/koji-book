@@ -2,11 +2,11 @@ import { Button } from "@/app/_components/Button";
 import { useRecipes } from "../_hooks/useRecipes";
 import { getStatusLabel } from "@/app/_utils/getStatusLabel";
 import { useRouter } from "next/navigation";
-
+import { Loading } from "./Loading";
 export const RecipeItems: React.FC = () => {
   const { data, error } = useRecipes();
   const { push } = useRouter();
-  if (!data) return <div>読込み中...</div>;
+  if (!data) return <Loading />;
   if (error) return <div>エラーが発生しました</div>;
   return (
     <>

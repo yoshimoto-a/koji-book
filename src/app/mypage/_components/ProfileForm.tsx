@@ -9,6 +9,7 @@ import { PutRequest } from "@/app/_types/Mypage/PutRequest";
 import { api } from "@/app/_utils/api";
 import { Button } from "@/app/_components/Button";
 import { supabase } from "@/app/_utils/supabase";
+import { Loading } from "./Loading";
 interface ProfileForm {
   email: string;
   name: string;
@@ -42,7 +43,7 @@ export const ProfileForm: React.FC = () => {
     });
   }, [data, reset]);
 
-  if (!data) return <div>読込み中...</div>;
+  if (!data) return <Loading />;
   if (error) return <div>エラーが発生しました</div>;
   if (!data.user) return <div>ユーザー情報がありません</div>;
 
