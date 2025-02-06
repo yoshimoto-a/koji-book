@@ -10,7 +10,7 @@ export const RecipeContents: React.FC<Props> = ({ data }) => {
   return (
     <div>
       <h2 className="text-lg pb-3 text-center">〇レシピの投稿</h2>
-      <div className=" flex justify-center items-center flex-wrap gap-2 pb-3">
+      <div className="grid grid-cols-2 gap-4 pb-3">
         {data.slice(0, 4).map(article => (
           <NextLink
             href={`/recipes/${article.id}`}
