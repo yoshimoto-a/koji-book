@@ -2,11 +2,12 @@ import { FavoriteItems } from "./FavoriteItems";
 import { useSaves } from "../_hooks/useSaves";
 import { Button } from "@/app/_components/Button";
 import { useRouter } from "next/navigation";
+import { Loading } from "./Loading";
 
 export const FavoriteSection: React.FC = () => {
   const { data, error } = useSaves();
   const { push } = useRouter();
-  if (!data) return <div>読込み中...</div>;
+  if (!data) return <Loading />;
   if (error) return <div>エラーが発生しました</div>;
   return (
     <div className="flex flex-col gap-5">

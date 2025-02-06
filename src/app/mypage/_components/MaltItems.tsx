@@ -2,10 +2,11 @@ import { Button } from "@/app/_components/Button";
 import { useMalts } from "../_hooks/useMalts";
 import { useRouter } from "next/navigation";
 import { getStatusLabel } from "@/app/_utils/getStatusLabel";
+import { Loading } from "./Loading";
 export const MaltItems: React.FC = () => {
   const { data, error } = useMalts();
   const { push } = useRouter();
-  if (!data) return <div>読込み中...</div>;
+  if (!data) return <Loading />;
   if (error) return <div>エラーが発生しました</div>;
   return (
     <>
