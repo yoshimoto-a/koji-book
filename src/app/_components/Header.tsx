@@ -10,15 +10,19 @@ import {
 import { supabase } from "../_utils/supabase";
 import { useSupabaseSession } from "../_hooks/useSupabaseSession";
 import { useRouter } from "next/navigation";
+import { useSignIn } from "../_hooks/useSignIn";
+import toast from "react-hot-toast";
 export const Header: React.FC = () => {
   const { session } = useSupabaseSession();
   const { push } = useRouter();
+  const { signIn } = useSignIn();
   const logout = async () => {
     try {
       const { error } = await supabase.auth.signOut();
       if (error) {
         throw new Error(error.message);
       }
+      toast.success("ログアウトしました");
     } catch (error) {
       console.error(error);
     }
@@ -50,7 +54,7 @@ export const Header: React.FC = () => {
                 <div className="text-xs">サインアップ</div>
               </button>
               <button
-                onClick={() => push("/login")}
+                onClick={signIn}
                 type="button"
                 className="flex flex-col gap-1 items-center"
               >

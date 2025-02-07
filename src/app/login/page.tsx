@@ -2,9 +2,9 @@
 import { Form } from "../_components/Form";
 import { Input } from "@/app/_components/Input";
 import { Button } from "@/app/_components/Button";
-import { useLogin } from "./_hooks/useLogin";
+import { useLoginFrom } from "./_hooks/useLoginForm";
 export default function Page() {
-  const { register, handleSubmit, errors, isSubmitting } = useLogin();
+  const { register, handleSubmit, errors, isSubmitting } = useLoginFrom();
 
   return (
     <Form onSubmit={handleSubmit} title="ログイン">
