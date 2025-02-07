@@ -3,6 +3,7 @@ import { MaltContents } from "./_components/(lp)/MaltContents";
 import { RecipeContents } from "./_components/(lp)/RecipeContents";
 import { Klee_One } from "next/font/google";
 import { ButtonSection } from "./_components/(lp)/ButtonSection";
+import { Toaster } from "react-hot-toast";
 const kleeOne = Klee_One({ weight: "400", subsets: ["latin"] });
 export default async function Home() {
   const response = await fetch(
@@ -15,6 +16,7 @@ export default async function Home() {
 
   return (
     <div className="max-w-md mx-auto py-10 px-2">
+      <Toaster />
       <div className="flex flex-col gap-4 items-center pb-10">
         <p className="">麹に特化したレシピ共有アプリ</p>
         <h1 className={`text-6xl ${kleeOne.className}`}>
