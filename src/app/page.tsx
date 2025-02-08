@@ -4,6 +4,7 @@ import { RecipeContents } from "./_components/(lp)/RecipeContents";
 import { Klee_One } from "next/font/google";
 import { ButtonSection } from "./_components/(lp)/ButtonSection";
 import { Toaster } from "react-hot-toast";
+import { InstagramIcon } from "./_components/InstagramIcon";
 const kleeOne = Klee_One({ weight: "400", subsets: ["latin"] });
 export default async function Home() {
   const response = await fetch(
@@ -48,6 +49,10 @@ export default async function Home() {
         <div className="flex gap-5 justify-center">
           <ButtonSection />
         </div>
+      </div>
+      <div className="flex justify-center items-center gap-5">
+        <div>お問い合わせはinstagramのDMでお願いします。</div>
+        <InstagramIcon />
       </div>
     </div>
   );
