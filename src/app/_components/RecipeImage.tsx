@@ -3,7 +3,7 @@ import Image from "next/image";
 import React, { ChangeEvent, createRef } from "react";
 import { Button } from "@/app/_components/Button";
 import { uploadImage } from "@/app/_utils/uploadImage";
-
+import { deleteImage } from "../_utils/deleteImage";
 interface Props {
   imageUrl: string | null;
   onChangeImageUrl: (iconUrl: string) => void;
@@ -27,6 +27,9 @@ export const RecipeImage: React.FC<Props> = ({
   };
 
   const deleteIcon = async () => {
+    if (!imageUrl) return;
+    const { error } = await deleteImage({ imageUrl });
+    if (error) alert("画像の削除に失敗しました");
     onChangeImageUrl("");
   };
 
