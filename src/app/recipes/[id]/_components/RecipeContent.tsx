@@ -10,6 +10,7 @@ import { Button } from "@/app/_components/Button";
 import { EditButton } from "@/app/malts/[id]/_components/EditButton";
 import { useUser } from "@/app/_hooks/useUser";
 import Image from "next/image";
+import { getStatusLabel } from "@/app/_utils/getStatusLabel";
 interface Props {
   id: string;
   initialValue: IndexResponse;
@@ -58,6 +59,11 @@ export const RecipeContent: React.FC<Props> = ({ initialValue, id }) => {
           />
         )}
       </div>
+      {userData.user && (
+        <div className="text-dark_brown border-dark_brown border-[1px] py-1 w-20 text-center rounded-md mt-2">
+          {getStatusLabel(data.recipeArticle.status)}
+        </div>
+      )}
 
       <div className="flex justify-between items-center pb-2">
         <div className="">
