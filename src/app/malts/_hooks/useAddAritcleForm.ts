@@ -44,6 +44,7 @@ export const useAddAritcleForm = () => {
       time: 8,
       tips: "",
       title: "",
+      imageUrl: "",
     },
   });
 

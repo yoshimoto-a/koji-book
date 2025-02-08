@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useMalts } from "../_hooks/useMalts";
 import { MyPageButton } from "../_components/MyPageButton";
+import { getStatusLabel } from "@/app/_utils/getStatusLabel";
 export default function Malts() {
   const { push } = useRouter();
   const { data, error } = useMalts();
@@ -18,7 +19,12 @@ export default function Malts() {
             className="border-[1px] p-2 border-dark_brown rounded-md cursor-pointer"
             onClick={() => push(`/malts/${article.id}`)}
           >
-            <div>{article.title}</div>
+            <div className="flex justify-start items-center gap-3">
+              <div className="bg-dark_brown text-white py-1 w-20 text-center rounded-md">
+                {getStatusLabel(article.status)}
+              </div>
+              <div>{article.title}</div>
+            </div>
           </div>
         ))}
       </div>

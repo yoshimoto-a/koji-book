@@ -15,10 +15,21 @@ export const GET = async (request: NextRequest, { params }: Props) => {
     const { id } = await params;
     const token = request.headers.get("Authorization") ?? "";
     const { data } = await supabase.auth.getUser(token);
+    const user = data.user
+      ? await prisma.user.findUnique({
+          where: {
+            supabaseUserId: data.user.id,
+          },
+        })
+      : null;
+
     const maltArticle = await prisma.maltArticle.findUnique({
       where: {
         id,
-        status: "PUBLIC",
+        OR: [
+          { status: "PUBLIC" },
+          { status: "DRAFT", userId: user ? user.id : undefined },
+        ],
       },
       include: {
         recipeArticles: true,
@@ -26,6 +37,7 @@ export const GET = async (request: NextRequest, { params }: Props) => {
       },
     });
 
+    //記事が見つからない場合
     if (!maltArticle) {
       return NextResponse.json(
         { message: "麹調味料データが存在しません" },
@@ -45,11 +57,6 @@ export const GET = async (request: NextRequest, { params }: Props) => {
         { status: 200 }
       );
     }
-    const user = await prisma.user.findUnique({
-      where: {
-        supabaseUserId: data.user.id,
-      },
-    });
 
     if (!user) {
       return NextResponse.json(
@@ -59,6 +66,7 @@ export const GET = async (request: NextRequest, { params }: Props) => {
         { status: 404 }
       );
     }
+
     const [liked, saved] = await Promise.all([
       prisma.maltUserAction.findUnique({
         where: {
