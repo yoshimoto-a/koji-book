@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/app/_components/Button";
 import { EditButton } from "./EditButton";
 import { useUser } from "@/app/_hooks/useUser";
+import { getStatusLabel } from "@/app/_utils/getStatusLabel";
 import Image from "next/image";
 interface Props {
   id: string;
@@ -56,6 +57,11 @@ export const MaltContent: React.FC<Props> = ({ initialValue, id }) => {
             />
           )}
         </div>
+        {userData.user && (
+          <div className="text-dark_brown border-dark_brown border-[1px] py-1 w-20 text-center rounded-md mt-2">
+            {getStatusLabel(data.maltArticle.status)}
+          </div>
+        )}
         <div className="flex justify-between items-center">
           <div>
             <h3 className="text-2xl">{data.maltArticle.title}</h3>
@@ -102,14 +108,35 @@ export const MaltContent: React.FC<Props> = ({ initialValue, id }) => {
           {data.recipeArticles.length === 0 ? (
             <div>まだ投稿がありません</div>
           ) : (
-            <div>
+            <div className="flex flex-col gap-2">
               {data.recipeArticles.map(article => (
                 <div
-                  className="border-dark_brown rounded-md p-5 border-2 text-xl cursor-pointer"
+                  className="border-dark_brown rounded-md p-2 border-2 text-xl cursor-pointer flex float-start items-center gap-5"
                   key={article.id}
                   onClick={() => push(`/recipes/${article.id}`)}
                 >
-                  {article.title}
+                  <div>
+                    {article.imageUrl ? (
+                      <Image
+                        alt={article.title}
+                        src={article.imageUrl}
+                        width={200}
+                        height={200}
+                        className="w-28"
+                      />
+                    ) : (
+                      <div className="w-28 flex justify-center">
+                        <Image
+                          alt=""
+                          src={"/koji.png"}
+                          width={200}
+                          height={200}
+                          className="w-20"
+                        />
+                      </div>
+                    )}
+                  </div>
+                  <div className="text-base">{article.title}</div>
                 </div>
               ))}
             </div>
