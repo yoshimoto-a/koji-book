@@ -50,8 +50,8 @@ export default async function Home() {
           <ButtonSection />
         </div>
       </div>
-      <div className="flex justify-center items-center gap-5">
-        <div>お問い合わせはinstagramのDMでお願いします。</div>
+      <div className="flex justify-center items-center gap-3">
+        <div className="text-sm">お問い合わせはDMでお願いします。</div>
         <InstagramIcon />
       </div>
     </div>
