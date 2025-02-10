@@ -8,6 +8,8 @@ import { Status } from "@prisma/client";
 import { PostRequest } from "@/app/_types/Recipes/PostRequest";
 import { useCategories } from "../../_hooks/useCategories";
 import { useEffect, useState } from "react";
+import { deleteImage } from "@/app/_utils/deleteImage";
+
 interface Form {
   title: string;
   tips: string;
@@ -22,6 +24,7 @@ export const useAddAritcleForm = () => {
   const [categories, setCategories] = useState<
     null | { value: string; label: string }[]
   >(null);
+  const [deleteImageUrls, setDeleteImageUrls] = useState<string[]>([]);
   const schema = z.object({
     title: z.string().min(1, { message: "必須です" }),
     tips: z.string().min(1, { message: "必須です" }),
@@ -64,6 +67,7 @@ export const useAddAritcleForm = () => {
       };
       await api.post<PostRequest, { message: string }>(`/api/recipes`, body);
       reset();
+      await deleteImage({ imageUrls: deleteImageUrls });
       push(`/recipes`);
     } catch (error) {
       console.error(error);
@@ -87,5 +91,6 @@ export const useAddAritcleForm = () => {
     watch,
     setValue,
     categories,
+    setDeleteImageUrls,
   };
 };

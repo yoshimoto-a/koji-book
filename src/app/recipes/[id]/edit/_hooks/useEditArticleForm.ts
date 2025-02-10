@@ -8,6 +8,7 @@ import { RecipeArticle, Status } from "@prisma/client";
 import { PutRequest } from "@/app/_types/Recipe/PutRequest";
 import { useCategories } from "@/app/recipes/_hooks/useCategories";
 import { useEffect, useState } from "react";
+import { deleteImage } from "@/app/_utils/deleteImage";
 interface Form {
   title: string;
   tips: string;
@@ -22,6 +23,8 @@ export const useEditAritcleForm = ({ data }: { data: RecipeArticle }) => {
   const [categories, setCategories] = useState<
     null | { value: string; label: string }[]
   >(null);
+  const [deleteImageUrls, setDeleteImageUrls] = useState<string[]>([]);
+
   const schema = z.object({
     title: z.string().min(1, { message: "必須です" }),
     tips: z.string().min(1, { message: "必須です" }),
@@ -52,7 +55,6 @@ export const useEditAritcleForm = ({ data }: { data: RecipeArticle }) => {
   });
 
   const onSubmit = async (formData: Form) => {
-    console.log(formData);
     try {
       const { material, tips, title, status, imageUrl } = formData;
       const body: PutRequest = {
@@ -66,6 +68,9 @@ export const useEditAritcleForm = ({ data }: { data: RecipeArticle }) => {
         `/api/recipes/${data.id}`,
         body
       );
+      if (1 <= deleteImageUrls.length) {
+        await deleteImage({ imageUrls: deleteImageUrls });
+      }
       reset();
       push(`/recipes/${data.id}`);
     } catch (error) {
@@ -83,6 +88,19 @@ export const useEditAritcleForm = ({ data }: { data: RecipeArticle }) => {
     );
   }, [categoriesData]);
 
+  const cancel = async () => {
+    const imageUrl = watch("imageUrl");
+    if (imageUrl !== null) {
+      deleteImageUrls.push(imageUrl);
+    }
+    reset();
+    await deleteImage({
+      imageUrls: deleteImageUrls.filter(url => url !== data.imageUrl),
+    });
+    push(`/recipes/${data.id}`);
+    return;
+  };
+
   return {
     register,
     control,
@@ -90,9 +108,10 @@ export const useEditAritcleForm = ({ data }: { data: RecipeArticle }) => {
     errors,
     watch,
     isSubmitting,
-    reset,
     setValue,
     categories,
     error,
+    setDeleteImageUrls,
+    cancel,
   };
 };

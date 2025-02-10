@@ -1,16 +1,13 @@
-import { IndexResponse } from "@/app/_types/Malt/IndexResponse";
+"use client";
 import { ArticleForm } from "./_components/AriticleForm";
-interface Props {
-  params: Promise<{
-    id: string;
-  }>;
-}
-export default async function EditPage({ params }: Props) {
-  const { id } = await params;
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/malts/${id}`
-  );
-  const data: IndexResponse = await response.json();
+import { useMalt } from "../_hooks/useMalt";
+import { useParams } from "next/navigation";
+export default function EditPage() {
+  const { id } = useParams();
+  const { data, error } = useMalt({ id: id as string });
+  if (!data) return <div className="text-center pt-10"> 読込み中... </div>;
+  if (error)
+    return <div className="text-center pt-10"> エラーが発生しました </div>;
 
   return (
     <div className="max-w-md mx-auto py-10 px-5">

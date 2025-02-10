@@ -5,7 +5,7 @@ export const useMalt = ({
   initialValue,
   id,
 }: {
-  initialValue: IndexResponse;
+  initialValue?: IndexResponse;
   id: string;
 }) => {
   return useFetch(`/api/malts/${id}`, initialValue);

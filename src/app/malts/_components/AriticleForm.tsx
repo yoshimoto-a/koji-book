@@ -20,6 +20,7 @@ export const ArticleForm: React.FC = () => {
     isSubmitting,
     watch,
     setValue,
+    setDeleteImageUrls,
   } = useAddAritcleForm();
 
   const options: Option[] = [
@@ -32,6 +33,7 @@ export const ArticleForm: React.FC = () => {
         imageUrl={watch("imageUrl")}
         disabled={isSubmitting}
         onChangeImageUrl={v => setValue("imageUrl", v)}
+        setDeleteImageUrls={setDeleteImageUrls}
       />
       <Input
         label="タイトル"

@@ -5,7 +5,7 @@ export const useRecipe = ({
   initialValue,
   id,
 }: {
-  initialValue: IndexResponse;
+  initialValue?: IndexResponse;
   id: string;
 }) => {
   return useFetch(`/api/recipes/${id}`, initialValue);
