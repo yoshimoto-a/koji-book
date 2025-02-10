@@ -83,13 +83,16 @@ export const useEditAritcleForm = ({ data }: { data: MaltArticle }) => {
   };
   const cancel = async () => {
     const imageUrl = watch("imageUrl");
-    if (imageUrl !== null) {
+    console.log(imageUrl);
+    if (imageUrl) {
       deleteImageUrls.push(imageUrl);
     }
     reset();
-    await deleteImage({
-      imageUrls: deleteImageUrls.filter(url => url !== data.imageUrl),
-    });
+    if (1 <= deleteImageUrls.length) {
+      await deleteImage({
+        imageUrls: deleteImageUrls.filter(url => url !== data.imageUrl),
+      });
+    }
     push(`/malts/${data.id}`);
     return;
   };
