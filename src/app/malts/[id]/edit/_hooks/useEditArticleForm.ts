@@ -7,6 +7,8 @@ import { api } from "@/app/_utils/api";
 import { useRouter } from "next/navigation";
 import { MaltArticle } from "@prisma/client";
 import { PutRequest } from "@/app/_types/Malt/PutRequest";
+import { useState } from "react";
+import { deleteImage } from "@/app/_utils/deleteImage";
 interface Form {
   title: string;
   time: number;
@@ -18,6 +20,8 @@ interface Form {
 }
 export const useEditAritcleForm = ({ data }: { data: MaltArticle }) => {
   const { push } = useRouter();
+  const [deleteImageUrls, setDeleteImageUrls] = useState<string[]>([]);
+
   const schema = z.object({
     title: z.string().min(1, { message: "必須です" }),
     time: z.number().min(1, { message: "必須です" }),
@@ -63,17 +67,31 @@ export const useEditAritcleForm = ({ data }: { data: MaltArticle }) => {
         temperature: Number(temperature),
         imageUrl,
       };
-      console.log(formData, body);
       await api.put<PutRequest, { message: string }>(
         `/api/malts/${data.id}`,
         body
       );
+      if (1 <= deleteImageUrls.length) {
+        await deleteImage({ imageUrls: deleteImageUrls });
+      }
       reset();
       push(`/malts/${data.id}`);
     } catch (error) {
       console.error(error);
       alert(error);
     }
+  };
+  const cancel = async () => {
+    const imageUrl = watch("imageUrl");
+    if (imageUrl !== null) {
+      deleteImageUrls.push(imageUrl);
+    }
+    reset();
+    await deleteImage({
+      imageUrls: deleteImageUrls.filter(url => url !== data.imageUrl),
+    });
+    push(`/malts/${data.id}`);
+    return;
   };
 
   return {
@@ -84,6 +102,7 @@ export const useEditAritcleForm = ({ data }: { data: MaltArticle }) => {
     handleSubmit: handleSubmit(onSubmit),
     errors,
     isSubmitting,
-    reset,
+    setDeleteImageUrls,
+    cancel,
   };
 };

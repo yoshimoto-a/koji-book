@@ -1,5 +1,4 @@
 "use client";
-
 import { Button } from "@/app/_components/Button";
 import { useAddAritcleForm } from "../_hooks/useAddAritcleForm";
 import { Input } from "@/app/_components/Input";
@@ -20,6 +19,7 @@ export const ArticleForm: React.FC = () => {
     isSubmitting,
     categories,
     watch,
+    setDeleteImageUrls,
   } = useAddAritcleForm();
 
   const options: Option[] = [
@@ -33,6 +33,7 @@ export const ArticleForm: React.FC = () => {
           disabled={isSubmitting}
           imageUrl={watch("imageUrl")}
           onChangeImageUrl={v => setValue("imageUrl", v)}
+          setDeleteImageUrls={setDeleteImageUrls}
         />
         <label htmlFor="maltArticleId">使用する麹調味料</label>
         {categories && (

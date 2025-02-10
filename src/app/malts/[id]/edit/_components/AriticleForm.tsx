@@ -7,9 +7,9 @@ import { Textarea } from "@/app/_components/Textarea";
 import Select from "react-select";
 import { Controller } from "react-hook-form";
 import { Status } from "@prisma/client";
-import { useRouter } from "next/navigation";
 import { IndexResponse } from "@/app/_types/Malt/IndexResponse";
 import { RecipeImage } from "@/app/_components/RecipeImage";
+
 type Option = { value: Status; label: string };
 interface Props {
   data: IndexResponse;
@@ -22,10 +22,11 @@ export const ArticleForm: React.FC<Props> = ({ data }) => {
     errors,
     setValue,
     isSubmitting,
-    reset,
     watch,
+    setDeleteImageUrls,
+    cancel,
   } = useEditAritcleForm({ data: data.maltArticle });
-  const { push } = useRouter();
+
   const options: Option[] = [
     { value: Status.DRAFT, label: "下書き保存" },
     { value: Status.PENDING_APPROVAL, label: "投稿申請" },
@@ -37,6 +38,7 @@ export const ArticleForm: React.FC<Props> = ({ data }) => {
         disabled={isSubmitting}
         imageUrl={watch("imageUrl")}
         onChangeImageUrl={v => setValue("imageUrl", v)}
+        setDeleteImageUrls={setDeleteImageUrls}
       />
       <Input
         label="タイトル"
@@ -113,13 +115,7 @@ export const ArticleForm: React.FC<Props> = ({ data }) => {
       </div>
 
       <Button type="submit">保存</Button>
-      <Button
-        type="button"
-        onClick={() => {
-          reset();
-          push(`/malts/${data.maltArticle.id}`);
-        }}
-      >
+      <Button type="button" onClick={cancel}>
         キャンセル
       </Button>
     </form>

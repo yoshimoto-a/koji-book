@@ -5,6 +5,8 @@ import { PostRequest } from "@/app/_types/Malts/PostRequest";
 import { Status } from "@prisma/client";
 import { api } from "@/app/_utils/api";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { deleteImage } from "@/app/_utils/deleteImage";
 
 interface Form {
   title: string;
@@ -17,6 +19,8 @@ interface Form {
 }
 export const useAddAritcleForm = () => {
   const { push } = useRouter();
+  const [deleteImageUrls, setDeleteImageUrls] = useState<string[]>([]);
+
   const schema = z.object({
     title: z.string().min(1, { message: "必須です" }),
     time: z.number().min(1, { message: "必須です" }),
@@ -63,6 +67,9 @@ export const useAddAritcleForm = () => {
         imageUrl,
       };
       await api.post<PostRequest, { message: string }>("/api/malts", body);
+      if (1 <= deleteImageUrls.length) {
+        await deleteImage({ imageUrls: deleteImageUrls });
+      }
       reset();
       push("/malts");
     } catch (error) {
@@ -79,5 +86,6 @@ export const useAddAritcleForm = () => {
     isSubmitting,
     watch,
     setValue,
+    setDeleteImageUrls,
   };
 };

@@ -7,7 +7,6 @@ import { Textarea } from "@/app/_components/Textarea";
 import Select from "react-select";
 import { Controller } from "react-hook-form";
 import { Status } from "@prisma/client";
-import { useRouter } from "next/navigation";
 import { IndexResponse } from "@/app/_types/Recipe/IndexResponse";
 import { RecipeImage } from "@/app/_components/RecipeImage";
 
@@ -22,14 +21,14 @@ export const ArticleForm: React.FC<Props> = ({ data }) => {
     handleSubmit,
     errors,
     isSubmitting,
-    reset,
     watch,
     setValue,
     categories,
+    cancel,
+    setDeleteImageUrls,
   } = useEditAritcleForm({
     data: data.recipeArticle,
   });
-  const { push } = useRouter();
   const options: Option[] = [
     { value: Status.DRAFT, label: "下書き保存" },
     { value: Status.PUBLIC, label: "公開中" },
@@ -40,6 +39,7 @@ export const ArticleForm: React.FC<Props> = ({ data }) => {
         imageUrl={watch("imageUrl")}
         disabled={isSubmitting}
         onChangeImageUrl={v => setValue("imageUrl", v)}
+        setDeleteImageUrls={setDeleteImageUrls}
       />
       <div>
         <label htmlFor="maltArticleId">使用する麹調味料</label>
@@ -120,15 +120,8 @@ export const ArticleForm: React.FC<Props> = ({ data }) => {
           <p className="text-sm text-red-500 ">{errors.status.message}</p>
         )}
       </div>
-
       <Button type="submit">保存</Button>
-      <Button
-        type="button"
-        onClick={() => {
-          reset();
-          push(`/recipes/${data.recipeArticle.id}`);
-        }}
-      >
+      <Button type="button" onClick={cancel}>
         キャンセル
       </Button>
     </form>
