@@ -83,7 +83,6 @@ export const useEditAritcleForm = ({ data }: { data: MaltArticle }) => {
   };
   const cancel = async () => {
     const imageUrl = watch("imageUrl");
-    console.log(imageUrl);
     if (imageUrl) {
       deleteImageUrls.push(imageUrl);
     }
