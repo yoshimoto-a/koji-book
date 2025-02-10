@@ -5,18 +5,18 @@ import { useSupabaseSession } from "@/app/_hooks/useSupabaseSession";
 import { useEffect } from "react";
 import { Like } from "@/app/_components/Like";
 import { Save } from "@/app/_components/Save";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/app/_components/Button";
 import { EditButton } from "@/app/malts/[id]/_components/EditButton";
 import { useUser } from "@/app/_hooks/useUser";
 import Image from "next/image";
 import { getStatusLabel } from "@/app/_utils/getStatusLabel";
 interface Props {
-  id: string;
   initialValue: IndexResponse;
 }
-export const RecipeContent: React.FC<Props> = ({ initialValue, id }) => {
-  const { data, error, mutate } = useRecipe({ initialValue, id });
+export const RecipeContent: React.FC<Props> = ({ initialValue }) => {
+  const { id } = useParams();
+  const { data, error, mutate } = useRecipe({ initialValue, id: id as string });
   const { session } = useSupabaseSession();
   const { push } = useRouter();
   const { data: userData, error: userError, mutate: updateUser } = useUser();
@@ -72,13 +72,13 @@ export const RecipeContent: React.FC<Props> = ({ initialValue, id }) => {
         </div>
         <div className="flex justify-end items-center gap-5">
           <Like
-            articleId={id}
+            articleId={id as string}
             liked={data.liked}
             likesCount={data.recipeArticle.likes}
             mutate={mutate}
           />
           <Save
-            articleId={id}
+            articleId={id as string}
             saved={data.saved}
             savesCount={data.recipeArticle.saves}
             mutate={mutate}
