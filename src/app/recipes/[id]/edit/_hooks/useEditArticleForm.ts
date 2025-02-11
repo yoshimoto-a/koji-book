@@ -68,9 +68,7 @@ export const useEditAritcleForm = ({ data }: { data: RecipeArticle }) => {
         `/api/recipes/${data.id}`,
         body
       );
-      if (1 <= deleteImageUrls.length) {
-        await deleteImage({ imageUrls: deleteImageUrls });
-      }
+      await deleteImage({ imageUrls: deleteImageUrls });
       reset();
       push(`/recipes/${data.id}`);
     } catch (error) {
@@ -94,11 +92,9 @@ export const useEditAritcleForm = ({ data }: { data: RecipeArticle }) => {
       deleteImageUrls.push(imageUrl);
     }
     reset();
-    if (1 <= deleteImageUrls.length) {
-      await deleteImage({
-        imageUrls: deleteImageUrls.filter(url => url !== data.imageUrl),
-      });
-    }
+    await deleteImage({
+      imageUrls: deleteImageUrls.filter(url => url !== data.imageUrl),
+    });
     push(`/recipes/${data.id}`);
     return;
   };

@@ -6,11 +6,9 @@ import { Input } from "@/app/_components/Input";
 import { Textarea } from "@/app/_components/Textarea";
 import Select from "react-select";
 import { Controller } from "react-hook-form";
-import { Status } from "@prisma/client";
 import { IndexResponse } from "@/app/_types/Malt/IndexResponse";
 import { RecipeImage } from "@/app/_components/RecipeImage";
 
-type Option = { value: Status; label: string };
 interface Props {
   data: IndexResponse;
 }
@@ -25,13 +23,9 @@ export const ArticleForm: React.FC<Props> = ({ data }) => {
     watch,
     setDeleteImageUrls,
     cancel,
+    options,
   } = useEditAritcleForm({ data: data.maltArticle });
 
-  const options: Option[] = [
-    { value: Status.DRAFT, label: "下書き保存" },
-    { value: Status.PENDING_APPROVAL, label: "投稿申請" },
-    { value: Status.PUBLIC, label: "公開中" },
-  ];
   return (
     <form onSubmit={handleSubmit} className="pt-10 flex flex-col gap-5">
       <RecipeImage
