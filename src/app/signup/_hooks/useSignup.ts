@@ -34,7 +34,7 @@ export const useSignup = () => {
         email: formData.email,
         password: formData.password,
         options: {
-          emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/login`,
+          emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/login`,
         },
       });
       if (error) {
