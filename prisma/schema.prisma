@@ -41,6 +41,13 @@ model MaltArticle {
   user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   maltUserActions MaltUserAction[]
   recipeArticles  RecipeArticle[]
+  
+  // MAINに紐づくSUBのMaltArticleを示すリレーション
+  mainMaltArticleId     String?          @db.Uuid
+  mainMaltArticle       MaltArticle?     @relation("SubArticles", fields: [mainMaltArticleId], references: [id], onDelete: Cascade)
+
+  // SUBに関連するMaltArticleのリスト
+  subArticles           MaltArticle[]    @relation("SubArticles")
 
   @@map("malt_articles")
 }
