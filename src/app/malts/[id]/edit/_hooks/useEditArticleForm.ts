@@ -71,9 +71,7 @@ export const useEditAritcleForm = ({ data }: { data: MaltArticle }) => {
         `/api/malts/${data.id}`,
         body
       );
-      if (1 <= deleteImageUrls.length) {
-        await deleteImage({ imageUrls: deleteImageUrls });
-      }
+      await deleteImage({ imageUrls: deleteImageUrls });
       reset();
       push(`/malts/${data.id}`);
     } catch (error) {
@@ -87,15 +85,20 @@ export const useEditAritcleForm = ({ data }: { data: MaltArticle }) => {
       deleteImageUrls.push(imageUrl);
     }
     reset();
-    if (1 <= deleteImageUrls.length) {
-      await deleteImage({
-        imageUrls: deleteImageUrls.filter(url => url !== data.imageUrl),
-      });
-    }
+    await deleteImage({
+      imageUrls: deleteImageUrls.filter(url => url !== data.imageUrl),
+    });
     push(`/malts/${data.id}`);
     return;
   };
-
+  type Option = { value: Status; label: string };
+  const options: Option[] = [
+    { value: Status.DRAFT, label: "下書き保存" },
+    { value: Status.PENDING_APPROVAL, label: "投稿申請" },
+    ...(data.status === Status.PUBLIC
+      ? [{ value: Status.PUBLIC, label: "公開中" }]
+      : []), //下書き、申請中の場合に公開中にできないように
+  ];
   return {
     register,
     control,
@@ -106,5 +109,6 @@ export const useEditAritcleForm = ({ data }: { data: MaltArticle }) => {
     isSubmitting,
     setDeleteImageUrls,
     cancel,
+    options,
   };
 };

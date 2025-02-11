@@ -80,7 +80,11 @@ export const useAddAritcleForm = () => {
       data.maltArticles.map(malt => ({ value: malt.id, label: malt.title }))
     );
   }, [data]);
-
+  type Option = { value: Status; label: string };
+  const options: Option[] = [
+    { value: Status.DRAFT, label: "下書き保存" },
+    { value: Status.PUBLIC, label: "公開する" },
+  ];
   return {
     register,
     control,
@@ -92,5 +96,6 @@ export const useAddAritcleForm = () => {
     setValue,
     categories,
     setDeleteImageUrls,
+    options,
   };
 };

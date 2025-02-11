@@ -67,9 +67,7 @@ export const useAddAritcleForm = () => {
         imageUrl,
       };
       await api.post<PostRequest, { message: string }>("/api/malts", body);
-      if (1 <= deleteImageUrls.length) {
-        await deleteImage({ imageUrls: deleteImageUrls });
-      }
+      await deleteImage({ imageUrls: deleteImageUrls });
       reset();
       push("/malts");
     } catch (error) {
