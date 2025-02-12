@@ -11,7 +11,7 @@ export default async function Recipes() {
   );
   const data: IndexResponse = await response.json();
   return (
-    <div className="max-w-md mx-auto py-10 px-5">
+    <div className="max-w-md mx-auto pt-5 px-5">
       <h2 className="text-xl">麹調味料を使ったレシピ</h2>
 
       <div className="flex justify-between items-center py-3">
