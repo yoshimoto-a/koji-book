@@ -9,21 +9,33 @@ import { Button } from "@/app/_components/Button";
 import { useRecipes } from "../_hooks/useRecipes";
 import { Malt } from "./Malt";
 import Image from "next/image";
+import { Paginate } from "@/app/_components/Pagenate";
+import { useSearchParamsState } from "../_hooks/useSearchParamsState";
+import { SearchForm } from "@/app/_components/SearchForm";
 interface Props {
   recipeData: IndexResponse;
 }
 export const RecipeItems: React.FC<Props> = ({ recipeData }) => {
-  const { data, error, mutate } = useRecipes({ initialValue: recipeData });
+  const { currentPage, setCurrentPage, searchKeyword, setSearchKeyword } =
+    useSearchParamsState();
+
+  const { data, error, mutate } = useRecipes({
+    initialValue: recipeData,
+    searchKeyword,
+    currentPage,
+  });
   const { session } = useSupabaseSession();
   const { push } = useRouter();
   useEffect(() => {
     if (session) mutate();
   }, [session, mutate]);
+
   if (!data) return <div>読込み中...</div>;
   if (error) return <div>エラー が発生しました</div>;
 
   return (
     <div className="flex flex-col gap-5">
+      <SearchForm onSearch={setSearchKeyword} initialKeyword={searchKeyword} />
       {data.recipeArticles.map(recipeArticle => (
         <div
           key={recipeArticle.article.id}
@@ -75,6 +87,13 @@ export const RecipeItems: React.FC<Props> = ({ recipeData }) => {
           </Button>
         </div>
       ))}
+      <div className="mt-4">
+        <Paginate
+          pageCount={data.totalPages}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
+      </div>
     </div>
   );
 };

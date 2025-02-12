@@ -5,6 +5,7 @@ import { buildError } from "../_utils/buildError";
 import { PostRequest } from "@/app/_types/Recipes/PostRequest";
 import { getCurrentUser } from "../_utils/getCurrentUser";
 import { supabase } from "@/app/_utils/supabase";
+import { Status } from "@prisma/client";
 export const POST = async (request: NextRequest) => {
   const prisma = await buildPrisma();
 
@@ -44,17 +45,61 @@ export const POST = async (request: NextRequest) => {
 export const GET = async (request: NextRequest) => {
   const prisma = await buildPrisma();
   try {
+    const url = new URL(request.url);
+    //意図しないスペース入ったため削除処理入れる
+    const searchword = url.searchParams
+      .get("keyword")
+      ?.replace(/\u200B/g, "")
+      .trim();
+    const page = parseInt(url.searchParams.get("page") || "0");
+    const pageSize = 15;
+    const skip = page * pageSize;
+    const take = pageSize;
     const token = request.headers.get("Authorization") ?? "";
     const { data } = await supabase.auth.getUser(token);
-    const recipeArticles = await prisma.recipeArticle.findMany({
-      where: {
-        status: "PUBLIC",
-      },
-      orderBy: { createdAt: "desc" },
-      include: {
-        maltArticle: true,
-      },
-    });
+
+    const whereCondition = {
+      status: Status.PUBLIC,
+      OR: [
+        {
+          title: {
+            contains: searchword || "",
+          },
+        },
+        {
+          tips: {
+            contains: searchword || "",
+          },
+        },
+        {
+          material: {
+            contains: searchword || "",
+          },
+        },
+        {
+          maltArticle: {
+            title: {
+              contains: searchword || "",
+            },
+          },
+        },
+      ],
+    };
+    const [recipeArticles, totalCount] = await Promise.all([
+      prisma.recipeArticle.findMany({
+        where: whereCondition,
+        skip,
+        take,
+        orderBy: { createdAt: "desc" },
+        include: {
+          maltArticle: true,
+        },
+      }),
+      prisma.recipeArticle.count({
+        where: whereCondition,
+      }),
+    ]);
+    const totalPages = Math.ceil(totalCount / take);
 
     //ログインしてなければreturn
     if (!data.user) {
@@ -66,6 +111,7 @@ export const GET = async (request: NextRequest) => {
             like: false,
             save: false,
           })),
+          totalPages,
         },
         { status: 200 }
       );
@@ -95,6 +141,7 @@ export const GET = async (request: NextRequest) => {
             ),
           };
         }),
+        totalPages,
       },
       { status: 200 }
     );
