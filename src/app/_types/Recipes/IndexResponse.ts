@@ -7,4 +7,5 @@ export type RecipeArticleWithActions = {
 };
 export type IndexResponse = {
   recipeArticles: RecipeArticleWithActions[];
+  totalPages: number;
 };
