@@ -31,9 +31,9 @@ export const MaltContent: React.FC<Props> = ({ initialValue }) => {
 
   return (
     <div>
-      <div className="flex justify-between pb-5">
+      <div className="flex justify-between">
         <div className="w-[150px]">
-          <Button onClick={() => push("/malts ")} type="button">
+          <Button onClick={() => push("/malts")} type="button">
             一覧に戻る
           </Button>
         </div>
@@ -46,8 +46,8 @@ export const MaltContent: React.FC<Props> = ({ initialValue }) => {
       </div>
 
       <div className="flex flex-col gap-3 pb-5">
-        <div className="flex justify-center py-2">
-          {data.maltArticle.imageUrl && (
+        {data.maltArticle.imageUrl && (
+          <div className="flex justify-center py-2">
             <Image
               alt={data.maltArticle.title}
               src={data.maltArticle.imageUrl}
@@ -55,10 +55,11 @@ export const MaltContent: React.FC<Props> = ({ initialValue }) => {
               height={400}
               className="w-full h-44 object-contain"
             />
-          )}
-        </div>
+          </div>
+        )}
+
         {userData.user && (
-          <div className="text-dark_brown border-dark_brown border-[1px] py-1 w-20 text-center rounded-md mt-2">
+          <div className="text-dark_brown border-dark_brown border-[1px] py-1 w-20 text-center rounded-md mt-3">
             {getStatusLabel(data.maltArticle.status)}
           </div>
         )}

@@ -34,7 +34,7 @@ export const RecipeItems: React.FC<Props> = ({ recipeData }) => {
   if (error) return <div>エラー が発生しました</div>;
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-3">
       <SearchForm onSearch={setSearchKeyword} initialKeyword={searchKeyword} />
       {data.recipeArticles.map(recipeArticle => (
         <div
@@ -55,7 +55,7 @@ export const RecipeItems: React.FC<Props> = ({ recipeData }) => {
           <div className="">
             <Malt item={recipeArticle.malt} />
           </div>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center gap-1">
             <h3 className="text-xl">{recipeArticle.article.title}</h3>
             <div className=" flex gap-5">
               <Like

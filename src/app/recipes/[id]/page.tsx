@@ -16,8 +16,7 @@ export default async function Page({ params }: Props) {
   const data: IndexResponse = await response.json();
 
   return (
-    <div className="max-w-md mx-auto py-10 px-5">
-      <div className="flex justify-end pb-5"></div>
+    <div className="max-w-md mx-auto py-5 px-5">
       <RecipeContent initialValue={data} />
     </div>
   );
