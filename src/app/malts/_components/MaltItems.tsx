@@ -26,7 +26,7 @@ export const MaltItems: React.FC<Props> = ({ maltsData }) => {
       {data.maltArticles.map(maltArticle => (
         <div
           key={maltArticle.article.id}
-          className="bg-light_beige py-2 px-3 rounded-md flex flex-col gap-5"
+          className="bg-light_beige py-2 px-3 rounded-md flex flex-col gap-3"
         >
           {maltArticle.article.imageUrl && (
             <div className="flex  justify-center">

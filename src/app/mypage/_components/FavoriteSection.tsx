@@ -12,11 +12,11 @@ export const FavoriteSection: React.FC = () => {
   return (
     <div className="flex flex-col gap-5">
       <div>
-        <h3>〇麹調味料</h3>
+        <h3 className="pb-1">〇麹調味料</h3>
         <FavoriteItems articles={{ type: "malt", data: data.malts }} />
       </div>
       <div>
-        <h3>〇レシピ</h3>
+        <h3 className="pb-1">〇レシピ</h3>
         <FavoriteItems articles={{ type: "recipe", data: data.recipes }} />
       </div>
       <Button

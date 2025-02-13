@@ -12,7 +12,7 @@ export default async function Malts() {
   const data: IndexResponse = await response.json();
 
   return (
-    <div className="max-w-md mx-auto py-10 px-5">
+    <div className="max-w-md mx-auto py-5 px-5">
       <h2 className="text-xl">麹調味料のレシピ</h2>
       <div className="flex justify-between items-center py-3">
         <PageLink url="/recipes">レシピページ</PageLink>
