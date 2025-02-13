@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import { useRecipes } from "../_hooks/useRecipes";
 import { MyPageButton } from "../_components/MyPageButton";
 import { getStatusLabel } from "@/app/_utils/getStatusLabel";
+import { AddButton } from "@/app/recipes/[id]/edit/_components/AddButton";
 export default function Recipes() {
   const { data, error } = useRecipes();
   const { push } = useRouter();
@@ -10,7 +11,10 @@ export default function Recipes() {
   if (error) return <div>エラーが発生しました</div>;
   return (
     <div className="max-w-md mx-auto py-10 px-5">
-      <h2 className="text-xl pb-5">投稿したレシピ一覧</h2>
+      <div className="flex justify-between pb-5">
+        <h2 className="text-xl">投稿したレシピ一覧</h2>
+        <AddButton />
+      </div>
       <MyPageButton />
       <div className="flex flex-col gap-5">
         {data?.recipeArticles.map(article => (
