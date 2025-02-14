@@ -3,13 +3,19 @@ import { Link } from "./Link";
 import NextLink from "next/link";
 import Image from "next/image";
 import { RecipeArticleWithMalt } from "@/app/_types/TopPage/IndexResponse";
+import { AddButton } from "@/app/malts/_components/AddButton";
+
 interface Props {
   data: RecipeArticleWithMalt[];
 }
 export const RecipeContents: React.FC<Props> = ({ data }) => {
   return (
     <div>
-      <h2 className="text-lg pb-3 text-center">〇レシピの投稿</h2>
+      <div className="flex justify-between py-2">
+        <h2 className="text-lg pb-3 text-center">〇レシピの投稿</h2>
+        <AddButton url="/recipes/new" />
+      </div>
+
       <div className="grid grid-cols-2 gap-4 pb-3">
         {data.slice(0, 4).map(article => (
           <NextLink
@@ -40,7 +46,7 @@ export const RecipeContents: React.FC<Props> = ({ data }) => {
         ))}
       </div>
       <div className="py-5 text-center">
-        <Link href={"/recipes"}>レシピをみる</Link>
+        <Link href={"/recipes"}>もっとレシピをみる</Link>
       </div>
     </div>
   );
