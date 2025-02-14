@@ -29,6 +29,7 @@ export const GET = async (request: NextRequest, { params }: Props) => {
         OR: [
           { status: "PUBLIC" },
           { status: "DRAFT", userId: user ? user.id : undefined },
+          { status: "PENDING_APPROVAL", userId: user ? user.id : undefined },
         ],
       },
       include: {
