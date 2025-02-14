@@ -2,6 +2,7 @@
 import { MaltArticle } from "@prisma/client";
 import { Link } from "./Link";
 import NextLink from "next/link";
+import { AddButton as MaltButton } from "@/app/malts/_components/AddButton";
 import Image from "next/image";
 interface Props {
   data: MaltArticle[];
@@ -9,7 +10,10 @@ interface Props {
 export const MaltContents: React.FC<Props> = ({ data }) => {
   return (
     <div>
-      <h2 className="text-lg pb-3 text-center">〇麹調味料の投稿</h2>
+      <div className="flex justify-between py-2">
+        <h2 className="text-lg pb-3 text-center">〇麹調味料の投稿</h2>
+        <MaltButton url="/malts/new" />
+      </div>
       <div className="grid grid-cols-2 gap-4 pb-3">
         {data.slice(0, 4).map(article => (
           <NextLink
@@ -36,7 +40,7 @@ export const MaltContents: React.FC<Props> = ({ data }) => {
         ))}
       </div>
       <div className="py-5 text-center">
-        <Link href={"/malts"}>麹調味料をみる</Link>
+        <Link href={"/malts"}>もっと麹調味料をみる</Link>
       </div>
     </div>
   );

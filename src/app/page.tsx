@@ -1,11 +1,10 @@
 import { IndexResponse } from "./_types/TopPage/IndexResponse";
 import { MaltContents } from "./_components/(lp)/MaltContents";
 import { RecipeContents } from "./_components/(lp)/RecipeContents";
-import { Klee_One } from "next/font/google";
 import { ButtonSection } from "./_components/(lp)/ButtonSection";
 import { Toaster } from "react-hot-toast";
 import { InstagramIcon } from "./_components/InstagramIcon";
-const kleeOne = Klee_One({ weight: "400", subsets: ["latin"] });
+import { MainSectoin } from "./_components/(lp)/MainSectoin";
 export default async function Home() {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/top_page`,
@@ -16,25 +15,12 @@ export default async function Home() {
   const { maltArticles, recipeArticles }: IndexResponse = await response.json();
 
   return (
-    <div className="max-w-md mx-auto py-10 px-2">
+    <div className="max-w-md mx-auto py-5 px-2">
       <Toaster />
-      <div className="flex flex-col gap-4 items-center pb-10">
-        <p className="">麹に特化したレシピ共有アプリ</p>
-        <h1 className={`text-6xl ${kleeOne.className}`}>
-          麹帳<span className="text-xs pl-2">-Koji Book-</span>
-        </h1>
-        <div className="text-center leading-7 pb-3">
-          ログインしてレシピを投稿！ <br />
-          ブックマーク機能で
-          <br />
-          作ってみたいレシピを保存🎵
-        </div>
-        <ButtonSection />
-      </div>
-
+      <MainSectoin />
       <div className="flex flex-col gap-10 pb-5">
-        <MaltContents data={maltArticles} />
         <RecipeContents data={recipeArticles} />
+        <MaltContents data={maltArticles} />
       </div>
       <div className="pb-5">
         <p className="text-center pb-4">
