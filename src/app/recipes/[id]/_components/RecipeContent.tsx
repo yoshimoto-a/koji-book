@@ -32,7 +32,9 @@ export const RecipeContent: React.FC<Props> = ({ initialValue }) => {
   if (!userData) return <div>読込み中...</div>;
   if (error) return <div>エラー が発生しました</div>;
   if (userError) return <div>エラー が発生しました</div>;
-
+  const isOwnPost =
+    userData.user &&
+    userData.user.recipeArticles.find(article => article.id === id);
   return (
     <div>
       <div className="flex justify-between pb-5">
@@ -41,8 +43,7 @@ export const RecipeContent: React.FC<Props> = ({ initialValue }) => {
             一覧に戻る
           </Button>
         </div>
-        {userData.user &&
-        userData.user.recipeArticles.find(article => article.id === id) ? (
+        {isOwnPost ? (
           <div className="w-[150px]">
             <EditButton />
           </div>
@@ -59,11 +60,11 @@ export const RecipeContent: React.FC<Props> = ({ initialValue }) => {
           />
         )}
       </div>
-      {userData.user && (
+      {isOwnPost ? (
         <div className="text-dark_brown border-dark_brown border-[1px] py-1 w-20 text-center rounded-md mt-2">
           {getStatusLabel(data.recipeArticle.status)}
         </div>
-      )}
+      ) : null}
 
       <div className="flex justify-between items-center pb-2">
         <div className="">
