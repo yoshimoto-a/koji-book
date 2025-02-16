@@ -4,6 +4,7 @@ export type RecipeArticleWithActions = {
   malt: string;
   like: boolean;
   save: boolean;
+  userName: string;
 };
 export type IndexResponse = {
   recipeArticles: RecipeArticleWithActions[];
