@@ -93,6 +93,7 @@ export const GET = async (request: NextRequest) => {
         orderBy: { createdAt: "desc" },
         include: {
           maltArticle: true,
+          user: true,
         },
       }),
       prisma.recipeArticle.count({
@@ -110,6 +111,7 @@ export const GET = async (request: NextRequest) => {
             malt: article.maltArticle.title,
             like: false,
             save: false,
+            userName: article.user.name,
           })),
           totalPages,
         },
@@ -139,6 +141,7 @@ export const GET = async (request: NextRequest) => {
                 action.actionType === "SAVE" &&
                 action.recipeArticleId === article.id
             ),
+            userName: article.user.name,
           };
         }),
         totalPages,

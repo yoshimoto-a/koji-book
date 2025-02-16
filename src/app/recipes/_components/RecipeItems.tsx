@@ -52,8 +52,9 @@ export const RecipeItems: React.FC<Props> = ({ recipeData }) => {
               />
             </div>
           )}
-          <div className="">
+          <div className="flex justify-between">
             <Malt item={recipeArticle.malt} />
+            <div>{recipeArticle.userName}</div>
           </div>
           <div className="flex justify-between items-center gap-1">
             <h3 className="text-xl">{recipeArticle.article.title}</h3>
