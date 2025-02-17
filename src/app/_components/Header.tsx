@@ -12,8 +12,10 @@ import { useSupabaseSession } from "../_hooks/useSupabaseSession";
 import { useRouter } from "next/navigation";
 import { useSignIn } from "../_hooks/useSignIn";
 import toast from "react-hot-toast";
+import { Unread } from "./Unread";
 export const Header: React.FC = () => {
   const { session } = useSupabaseSession();
+
   const { push } = useRouter();
   const { signIn } = useSignIn();
   const logout = async () => {
@@ -67,6 +69,7 @@ export const Header: React.FC = () => {
             </div>
           ) : (
             <div className="flex justify-start items-center gap-3">
+              <Unread />
               <button
                 onClick={() => push("/mypage")}
                 type="button"
