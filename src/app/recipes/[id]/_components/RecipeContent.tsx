@@ -11,6 +11,8 @@ import { EditButton } from "@/app/malts/[id]/_components/EditButton";
 import { useUser } from "@/app/_hooks/useUser";
 import Image from "next/image";
 import { getStatusLabel } from "@/app/_utils/getStatusLabel";
+import { CommentPost } from "../../_components/CommentPost";
+import { Comment } from "./Comment";
 interface Props {
   initialValue: IndexResponse;
 }
@@ -107,6 +109,16 @@ export const RecipeContent: React.FC<Props> = ({ initialValue }) => {
           <div className="whitespace-pre-wrap">{data.recipeArticle.tips}</div>
         </div>
       </div>
+      {session && <CommentPost />}
+      {data.comments.length === 0 ? (
+        <p>コメントはありません</p>
+      ) : (
+        <div className="flex flex-col gap-2">
+          {data.comments.map(comment => (
+            <Comment key={comment.id} comment={comment} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

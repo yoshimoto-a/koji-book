@@ -36,6 +36,9 @@ export const GET = async (request: NextRequest, { params }: Props) => {
       include: {
         maltArticle: true,
         user: true,
+        recipeComment: {
+          include: { user: true },
+        },
       },
     });
 
@@ -54,6 +57,13 @@ export const GET = async (request: NextRequest, { params }: Props) => {
           recipeArticle,
           maltTitle: recipeArticle.maltArticle.title,
           postedName: recipeArticle.user.name,
+          comments: recipeArticle.recipeComment.map(comment => ({
+            id: comment.id,
+            content: comment.content,
+            createdDate: comment.createdAt,
+            userName: comment.user.name,
+            userId: comment.userId,
+          })),
           liked: false,
           saved: false,
         },
@@ -95,6 +105,13 @@ export const GET = async (request: NextRequest, { params }: Props) => {
         recipeArticle,
         maltTitle: recipeArticle.maltArticle.title,
         postedName: recipeArticle.user.name,
+        comments: recipeArticle.recipeComment.map(comment => ({
+          id: comment.id,
+          content: comment.content,
+          createdDate: comment.createdAt,
+          userName: comment.user.name,
+          userId: comment.userId,
+        })),
         liked: liked !== null,
         saved: saved !== null,
       },
