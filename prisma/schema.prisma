@@ -19,28 +19,32 @@ model User {
   maltUserActions   MaltUserAction[]
   recipeArticles    RecipeArticle[]
   recipeUserActions RecipeUserAction[]
+  recipeComment     RecipeComment[]
 
   @@map("users")
 }
 
 model MaltArticle {
-  id              String           @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  status          Status
-  maltRole        MaltRole
-  title           String
-  temperature     Int
-  time            Int
-  material        String
-  tips            String
-  likes           Int              @default(0)
-  saves           Int              @default(0)
-  userId          String           @db.Uuid
-  createdAt       DateTime         @default(now()) @map("created_at")
-  updatedAt       DateTime         @updatedAt @map("updated_at")
-  imageUrl        String?
-  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  maltUserActions MaltUserAction[]
-  recipeArticles  RecipeArticle[]
+  id                  String           @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  status              Status
+  maltRole            MaltRole
+  title               String
+  temperature         Int
+  time                Int
+  material            String
+  tips                String
+  likes               Int              @default(0)
+  saves               Int              @default(0)
+  userId              String           @db.Uuid
+  createdAt           DateTime         @default(now()) @map("created_at")
+  updatedAt           DateTime         @updatedAt @map("updated_at")
+  imageUrl            String?
+  mainMaltArticleId   String?          @db.Uuid
+  malt_articles       MaltArticle?     @relation("malt_articlesTomalt_articles", fields: [mainMaltArticleId], references: [id], onDelete: Cascade)
+  other_malt_articles MaltArticle[]    @relation("malt_articlesTomalt_articles")
+  user                User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  maltUserActions     MaltUserAction[]
+  recipeArticles      RecipeArticle[]
 
   @@map("malt_articles")
 }
@@ -61,6 +65,7 @@ model RecipeArticle {
   maltArticle       MaltArticle        @relation(fields: [maltArticleId], references: [id], onDelete: Cascade)
   user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   RecipeUserActions RecipeUserAction[]
+  recipeComment     RecipeComment[]
 
   @@map("recipe_articles")
 }
@@ -93,6 +98,20 @@ model RecipeUserAction {
   @@map("recipe_user_actions")
 }
 
+model RecipeComment {
+  id            String        @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  recipeArticleId      String        @db.Uuid
+  userId        String        @db.Uuid
+  content       String
+  isRead        Boolean       @default(false)
+  createdAt     DateTime      @default(now()) @map("created_at")
+  recipeArticle   RecipeArticle @relation(fields: [recipeArticleId], references: [id], onDelete: Cascade)
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("recipe_comments")
+}
+
+
 enum UserRole {
   MEMBER
   ADMIN
@@ -100,8 +119,8 @@ enum UserRole {
 
 enum Status {
   DRAFT
-  PENDING_APPROVAL
   PUBLIC
+  PENDING_APPROVAL
 }
 
 enum MaltRole {
