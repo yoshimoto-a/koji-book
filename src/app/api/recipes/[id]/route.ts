@@ -37,7 +37,8 @@ export const GET = async (request: NextRequest, { params }: Props) => {
         maltArticle: true,
         user: true,
         recipeComment: {
-          include: { user: true },
+          include: { user: true, parentComment: { include: { user: true } } },
+          orderBy: { createdAt: "asc" },
         },
       },
     });
@@ -63,6 +64,12 @@ export const GET = async (request: NextRequest, { params }: Props) => {
             createdDate: comment.createdAt,
             userName: comment.user.name,
             userId: comment.userId,
+            parentComment: {
+              id: comment.parentId,
+              content: comment.parentComment?.content || null,
+              userId: comment.parentComment?.userId || null,
+              userName: comment.parentComment?.user.name || null,
+            },
           })),
           liked: false,
           saved: false,
@@ -111,6 +118,12 @@ export const GET = async (request: NextRequest, { params }: Props) => {
           createdDate: comment.createdAt,
           userName: comment.user.name,
           userId: comment.userId,
+          parentComment: {
+            id: comment.parentId,
+            content: comment.parentComment?.content || null,
+            userId: comment.parentComment?.userId || null,
+            userName: comment.parentComment?.user.name || null,
+          },
         })),
         liked: liked !== null,
         saved: saved !== null,

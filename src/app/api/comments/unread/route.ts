@@ -9,13 +9,19 @@ export const GET = async (request: NextRequest) => {
     const { user } = await getCurrentUser({ request });
     const unreadComments = await prisma.recipeComment.findMany({
       where: {
-        recipeArticle: {
-          userId: user.id,
-        },
+        OR: [
+          {
+            recipeArticle: {
+              userId: user.id,
+            },
+          },
+          { parentComment: { userId: user.id } },
+        ],
         isRead: false,
       },
       include: {
         recipeArticle: true,
+        parentComment: true,
       },
     });
 

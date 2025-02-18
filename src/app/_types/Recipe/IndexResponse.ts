@@ -6,6 +6,12 @@ export type Comment = {
   createdDate: Date;
   userId: string;
   userName: string;
+  parentComment: {
+    id: string | null;
+    content: string | null;
+    userId: string | null;
+    userName: string | null;
+  };
 };
 export type IndexResponse = {
   recipeArticle: RecipeArticle;

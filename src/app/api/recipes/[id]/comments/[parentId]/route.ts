@@ -2,26 +2,28 @@ import { NextRequest, NextResponse } from "next/server";
 import { buildPrisma } from "@/app/_utils/prisma";
 import { buildError } from "@/app/api/_utils/buildError";
 import { getCurrentUser } from "@/app/api/_utils/getCurrentUser";
-import { PostRequest } from "@/app/_types/Recipe/Comment/PostRequest";
+import { PostRequest } from "@/app/_types/Recipe/Comment/Reply/PostRequest";
 interface Props {
   params: Promise<{
     id: string;
+    parentId: string;
   }>;
 }
 export const POST = async (request: NextRequest, { params }: Props) => {
   const prisma = await buildPrisma();
   try {
     const { user } = await getCurrentUser({ request });
-    const { id } = await params;
+    const { id, parentId } = await params;
     const { comment }: PostRequest = await request.json();
-    const recipeArticle = await prisma.recipeArticle.findUnique({
-      where: { id },
+
+    const parentComment = await prisma.recipeComment.findUnique({
+      where: { id: parentId },
       select: { userId: true },
     });
 
-    if (!recipeArticle) {
+    if (!parentComment) {
       return NextResponse.json(
-        { error: "Recipe article not found" },
+        { error: "parent comment not found" },
         { status: 404 }
       );
     }
@@ -30,8 +32,9 @@ export const POST = async (request: NextRequest, { params }: Props) => {
         userId: user.id,
         content: comment,
         recipeArticleId: id,
-        //自分の投稿へのコメントは既読扱いする
-        isRead: user.id === recipeArticle.userId,
+        parentId,
+        //自分のコメントへの返信は既読扱いする
+        isRead: user.id === parentComment.userId,
       },
     });
     return NextResponse.json(
