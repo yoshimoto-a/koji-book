@@ -14,8 +14,9 @@ export const GET = async (request: NextRequest) => {
             recipeArticle: {
               userId: user.id,
             },
+            parentId: null,
           },
-          { parentComment: { userId: user.id } },
+          { parentComment: { userId: user.id }, NOT: { parentId: null } },
         ],
         isRead: false,
       },
