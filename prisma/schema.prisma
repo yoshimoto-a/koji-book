@@ -107,7 +107,9 @@ model RecipeComment {
   createdAt     DateTime      @default(now()) @map("created_at")
   recipeArticle   RecipeArticle @relation(fields: [recipeArticleId], references: [id], onDelete: Cascade)
   user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  parentId      String?       @db.Uuid @map("parent_id")
+  parentComment  RecipeComment? @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies       RecipeComment[] @relation("CommentReplies")
   @@map("recipe_comments")
 }
 

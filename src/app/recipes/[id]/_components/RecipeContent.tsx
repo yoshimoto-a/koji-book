@@ -114,6 +114,9 @@ export const RecipeContent: React.FC<Props> = ({ initialValue }) => {
         <p>コメントはありません</p>
       ) : (
         <div className="flex flex-col gap-2">
+          <h2 className="text-center" id="comments">
+            レシピへのコメント
+          </h2>
           {data.comments.map(comment => (
             <Comment key={comment.id} comment={comment} />
           ))}
