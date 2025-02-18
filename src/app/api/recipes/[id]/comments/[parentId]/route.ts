@@ -33,8 +33,6 @@ export const POST = async (request: NextRequest, { params }: Props) => {
         content: comment,
         recipeArticleId: id,
         parentId,
-        //自分のコメントへの返信は既読扱いする
-        isRead: user.id === parentComment.userId,
       },
     });
     return NextResponse.json(
