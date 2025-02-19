@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { buildPrisma } from "@/app/_utils/prisma";
 import { buildError } from "@/app/api/_utils/buildError";
 import { supabase } from "@/app/_utils/supabase";
+import { PostRequest } from "@/app/_types/Likes/PostRequest";
 interface Props {
   params: Promise<{
     id: string;
@@ -15,6 +16,7 @@ export const POST = async (request: NextRequest, { params }: Props) => {
   try {
     const { data } = await supabase.auth.getUser(token);
     const { id } = await params;
+    const { likesCount }: PostRequest = await request.json();
     //likesをインクリメント
     await prisma.maltArticle.update({
       where: {
@@ -22,7 +24,7 @@ export const POST = async (request: NextRequest, { params }: Props) => {
       },
       data: {
         likes: {
-          increment: 1,
+          increment: likesCount,
         },
       },
     });
