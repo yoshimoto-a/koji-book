@@ -1,7 +1,7 @@
 import { buildPrisma } from "@/app/_utils/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/app/api/_utils/getCurrentUser";
-import { PutRequest } from "@/app/_types/Admin/malts/Status/PutRequest";
+import { PutRequest } from "@/app/_types/Admin/malts/status/PutRequest";
 interface Props {
   params: Promise<{
     id: string;

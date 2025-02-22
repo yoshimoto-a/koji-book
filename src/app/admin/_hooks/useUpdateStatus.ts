@@ -1,4 +1,4 @@
-import { PutRequest } from "@/app/_types/Admin/malts/Status/PutRequest";
+import { PutRequest } from "@/app/_types/Admin/malts/status/PutRequest";
 import { useAdminMalts } from "./useAdminMalts";
 import { api } from "@/app/_utils/api";
 export const useUpdateStatus = ({ articleId }: { articleId: string }) => {
