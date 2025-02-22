@@ -3,9 +3,11 @@ import { ProfileForm } from "./_components/ProfileForm";
 import { MaltItems } from "./_components/MaltItems";
 import { RecipeItems } from "./_components/RecipeItems";
 import { FavoriteSection } from "./_components/FavoriteSection";
+import { AdminArea } from "../_components/AdminArea";
 export default function MyPage() {
   return (
     <div className="max-w-md mx-auto py-5 px-5">
+      <AdminArea />
       <h1 className="text-xl pb-2">マイページ</h1>
       <div className="flex flex-col gap-5">
         <div>

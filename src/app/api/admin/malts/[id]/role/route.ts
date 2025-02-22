@@ -21,8 +21,8 @@ export const PUT = async (request: NextRequest, { params }: Props) => {
         id,
       },
       data: {
-        status: "PUBLIC",
         maltRole,
+        ...(maltRole === "MAIN" && { mainMaltArticleId: null }),
       },
     });
 

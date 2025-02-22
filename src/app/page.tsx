@@ -5,6 +5,7 @@ import { ButtonSection } from "./_components/(lp)/ButtonSection";
 import { Toaster } from "react-hot-toast";
 import { InstagramIcon } from "./_components/InstagramIcon";
 import { MainSectoin } from "./_components/(lp)/MainSectoin";
+import { AdminArea } from "./_components/AdminArea";
 export default async function Home() {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/top_page`,
@@ -17,6 +18,7 @@ export default async function Home() {
   return (
     <div className="max-w-md mx-auto py-5 px-2">
       <Toaster />
+      <AdminArea />
       <MainSectoin />
       <div className="flex flex-col gap-10 pb-5">
         <RecipeContents data={recipeArticles} />
