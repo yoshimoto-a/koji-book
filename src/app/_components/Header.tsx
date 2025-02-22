@@ -6,6 +6,7 @@ import {
   faUser,
   faUserPlus,
   faRightToBracket,
+  faGear,
 } from "@fortawesome/free-solid-svg-icons";
 import { supabase } from "../_utils/supabase";
 import { useSupabaseSession } from "../_hooks/useSupabaseSession";
@@ -13,9 +14,10 @@ import { useRouter } from "next/navigation";
 import { useSignIn } from "../_hooks/useSignIn";
 import toast from "react-hot-toast";
 import { Unread } from "./Unread";
+import { useUser } from "../_hooks/useUser";
 export const Header: React.FC = () => {
   const { session } = useSupabaseSession();
-
+  const { data } = useUser();
   const { push } = useRouter();
   const { signIn } = useSignIn();
   const logout = async () => {
@@ -69,6 +71,21 @@ export const Header: React.FC = () => {
             </div>
           ) : (
             <div className="flex justify-start items-center gap-3">
+              {data?.user?.role === "ADMIN" && (
+                <div>
+                  <button
+                    onClick={() => push("/admin")}
+                    type="button"
+                    className="flex flex-col gap-1 items-center"
+                  >
+                    <FontAwesomeIcon
+                      icon={faGear}
+                      className="text-dark_brown text-2xl mt-1"
+                    />
+                    <div className="text-xs">管理画面</div>
+                  </button>
+                </div>
+              )}
               <Unread />
               <button
                 onClick={() => push("/mypage")}

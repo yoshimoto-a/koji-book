@@ -1,7 +1,7 @@
 import { buildPrisma } from "@/app/_utils/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/app/api/_utils/getCurrentUser";
-import { PutRequest } from "@/app/_types/Admin/malts/Role/PutRequest";
+import { PutRequest } from "@/app/_types/Admin/malts/Parent/PutRequest";
 interface Props {
   params: Promise<{
     id: string;
@@ -15,14 +15,13 @@ export const PUT = async (request: NextRequest, { params }: Props) => {
       throw new Error("権限がありません");
     }
     const { id } = await params;
-    const { maltRole }: PutRequest = await request.json();
+    const { parentId }: PutRequest = await request.json();
     await prisma.maltArticle.update({
       where: {
         id,
       },
       data: {
-        status: "PUBLIC",
-        maltRole,
+        mainMaltArticleId: parentId,
       },
     });
 

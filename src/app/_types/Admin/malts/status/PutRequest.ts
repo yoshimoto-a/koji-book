@@ -1,5 +1,5 @@
-import { MaltRole } from "@prisma/client";
+import { Status } from "@prisma/client";
 
 export type PutRequest = {
-  maltRole: MaltRole;
+  status: Status;
 };

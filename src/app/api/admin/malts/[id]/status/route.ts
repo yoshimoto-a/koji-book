@@ -1,7 +1,7 @@
 import { buildPrisma } from "@/app/_utils/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/app/api/_utils/getCurrentUser";
-import { PutRequest } from "@/app/_types/Admin/malts/Role/PutRequest";
+import { PutRequest } from "@/app/_types/Admin/malts/Status/PutRequest";
 interface Props {
   params: Promise<{
     id: string;
@@ -15,14 +15,37 @@ export const PUT = async (request: NextRequest, { params }: Props) => {
       throw new Error("権限がありません");
     }
     const { id } = await params;
-    const { maltRole }: PutRequest = await request.json();
+    const { status }: PutRequest = await request.json();
+    const maltArticle = await prisma.maltArticle.findUnique({
+      where: {
+        id,
+      },
+    });
+    if (!maltArticle) {
+      return NextResponse.json(
+        { error: "maltArticle is not found!" },
+        { status: 400 }
+      );
+    }
+
+    if (
+      maltArticle.maltRole === "SUB" &&
+      maltArticle.mainMaltArticleId === null
+    ) {
+      return NextResponse.json(
+        {
+          error:
+            "Main malt article is required for a SUB malt role but was not found.",
+        },
+        { status: 400 }
+      );
+    }
     await prisma.maltArticle.update({
       where: {
         id,
       },
       data: {
-        status: "PUBLIC",
-        maltRole,
+        status,
       },
     });
 
