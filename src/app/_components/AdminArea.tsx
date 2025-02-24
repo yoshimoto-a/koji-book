@@ -1,17 +1,10 @@
 "use client";
-import { useAdminMalts } from "../admin/_hooks/useAdminMalts";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClock } from "@fortawesome/free-solid-svg-icons";
+import { useUser } from "../_hooks/useUser";
+import { CurrentlyApplying } from "./CurrentlyApplying";
 export const AdminArea: React.FC = () => {
-  const { data, error } = useAdminMalts();
-  if (!data) return <div className="text-center pt-20">読込み中...</div>;
+  const { data, error } = useUser();
+  if (!data) return <div className="text-center">読込み中...</div>;
   if (error) return <div>エラー が発生しました</div>;
-
-  if (data.maltArticles.length === 0) return null;
-  return (
-    <div>
-      <FontAwesomeIcon icon={faClock} className="mr-2 text-red-500" />
-      申請中の投稿が{data.maltArticles.length}件あります。
-    </div>
-  );
+  if (data.user?.role !== "ADMIN") return null;
+  return <CurrentlyApplying />;
 };
