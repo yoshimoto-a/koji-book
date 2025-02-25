@@ -4,6 +4,7 @@ import { buildError } from "@/app/api/_utils/buildError";
 import { getCurrentUser } from "@/app/api/_utils/getCurrentUser";
 import { PostRequest } from "@/app/_types/Recipe/Comment/Reply/PostRequest";
 import { GmailService } from "@/app/api/_cervices/google/GmailService";
+import { WebPush } from "@/app/api/_cervices/webPush/PushNotificationService";
 interface Props {
   params: Promise<{
     id: string;
@@ -54,6 +55,15 @@ export const POST = async (request: NextRequest, { params }: Props) => {
       true
     );
     await gmail.sendMessage();
+    //プッシュ通知する
+    const webPush = new WebPush(
+      parentComment.userId,
+      user.name,
+      parentComment.recipeArticle,
+      true
+    );
+
+    await webPush.sendPushNotification();
 
     return NextResponse.json(
       {
