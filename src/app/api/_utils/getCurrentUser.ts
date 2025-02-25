@@ -33,6 +33,7 @@ export const getCurrentUser = async ({ request }: { request: NextRequest }) => {
           recipeArticle: true,
         },
       },
+      pushSubscription: true,
     },
   });
   if (!user) {

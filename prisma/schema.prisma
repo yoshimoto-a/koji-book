@@ -21,6 +21,8 @@ model User {
   recipeUserActions RecipeUserAction[]
   recipeComment     RecipeComment[]
 
+  pushSubscription  PushSubscriptionData?
+
   @@map("users")
 }
 
@@ -113,6 +115,16 @@ model RecipeComment {
   @@map("recipe_comments")
 }
 
+model PushSubscriptionData {
+  id        String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  endpoint  String
+  auth      String
+  p256dh    String
+
+  userId    String        @db.Uuid @unique
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map("push_subscription_datas")
+}
 
 enum UserRole {
   MEMBER

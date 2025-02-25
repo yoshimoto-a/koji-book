@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Noto_Sans_JP } from "next/font/google";
 import { Header } from "./_components/Header";
 import { Footer } from "./_components/Footer";
+import { ServiceWorker } from "./_components/ServiceWorker";
 import "./globals.css";
 
 const notSansJp = Noto_Sans_JP({ subsets: ["latin"] });
@@ -23,6 +24,7 @@ export default function RootLayout({
       >
         <Header />
         <div className="flex-grow pt-[70px]">{children}</div>
+        <ServiceWorker />
         <Footer />
       </body>
     </html>
