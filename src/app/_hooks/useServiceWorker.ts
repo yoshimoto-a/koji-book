@@ -7,19 +7,23 @@ import { useUser } from "./useUser";
 export const useServiceWorker = () => {
   const { data } = useUser();
   const [isSupported, setIsSupported] = useState(false);
-  const [isDisplay, setIsDisplay] = useState(true);
+  const [isDisplay, setIsDisplay] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   useEffect(() => {
     //ブラウザがサービスワーカーをサポートしているか確認
     if ("serviceWorker" in navigator && "PushManager" in window) {
       setIsSupported(true);
     }
+  }, []);
+
+  useEffect(() => {
     if (!data) return;
     if (!data.user) return;
-    if (data.user.pushSubscription) {
-      setIsDisplay(false);
-    }
-  }, [data]);
+    if (data.user.pushSubscription) return;
+    if (!isSupported) return;
+    setIsDisplay(true);
+  }, [data, isSupported]);
+
   // ArrayBuffer を Base64 に変換する関数
   const arrayBufferToBase64 = (buffer: ArrayBuffer | null): string => {
     if (!buffer) return "";
@@ -94,7 +98,6 @@ export const useServiceWorker = () => {
   };
 
   return {
-    isSupported,
     registerServiceWorker,
     isDisplay,
     setIsDisplay,
