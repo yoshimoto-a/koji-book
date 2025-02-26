@@ -17,7 +17,7 @@ export const ServiceWorker: React.FC = () => {
 
   if (!isDisplay) return null;
   return (
-    <div className="fixed bottom-0 right-0 z-20 w-2/3 rounded-md border-[3px] border-dark_brown bg-light_beige px-3 pb-2 pt-1 text-sm ">
+    <div className="fixed bottom-0 right-0 z-20 w-2/3 rounded-md border-[3px] border-dark_brown bg-light_beige px-3 pb-2 pt-1 text-sm mr-3 mb-3">
       <div className="relative pt-4">
         <button
           type="button"
