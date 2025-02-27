@@ -9,9 +9,11 @@ import { useSupabaseSession } from "../_hooks/useSupabaseSession";
 import Link from "next/link";
 import { supabase } from "../_utils/supabase";
 import toast from "react-hot-toast";
+import { useUser } from "../_hooks/useUser";
 
 export const UserActions: React.FC = () => {
   const { session } = useSupabaseSession();
+  const { data } = useUser();
   const logout = async () => {
     try {
       const { error } = await supabase.auth.signOut();
@@ -28,7 +30,7 @@ export const UserActions: React.FC = () => {
 
   return (
     <div className="flex justify-start items-center gap-3">
-      {session.user.role === "ADMIN" && (
+      {data?.user?.role === "ADMIN" && (
         <Link href={"/admin"} className="flex flex-col gap-1 items-center">
           <FontAwesomeIcon
             icon={faGear}
