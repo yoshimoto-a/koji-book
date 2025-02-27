@@ -75,6 +75,18 @@ export const useAddAritcleForm = () => {
       alert(error);
     }
   };
+  const cancel = async () => {
+    const imageUrl = watch("imageUrl");
+    if (imageUrl) {
+      deleteImageUrls.push(imageUrl);
+    }
+    reset();
+    await deleteImage({
+      imageUrls: deleteImageUrls,
+    });
+    push(`/malts`);
+    return;
+  };
 
   return {
     register,
@@ -85,5 +97,6 @@ export const useAddAritcleForm = () => {
     watch,
     setValue,
     setDeleteImageUrls,
+    cancel,
   };
 };

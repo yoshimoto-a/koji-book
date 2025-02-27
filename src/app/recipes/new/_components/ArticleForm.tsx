@@ -19,6 +19,7 @@ export const ArticleForm: React.FC = () => {
     watch,
     setDeleteImageUrls,
     options,
+    cancel,
   } = useAddAritcleForm();
 
   return (
@@ -113,7 +114,12 @@ export const ArticleForm: React.FC = () => {
         )}
       </div>
 
-      <Button type="submit">保存</Button>
+      <div className="flex gap-2 flex-col">
+        <Button type="submit">保存</Button>
+        <Button type="button" onClick={cancel}>
+          キャンセル
+        </Button>
+      </div>
     </form>
   );
 };

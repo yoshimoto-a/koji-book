@@ -85,17 +85,30 @@ export const useAddAritcleForm = () => {
     { value: Status.DRAFT, label: "下書き保存" },
     { value: Status.PUBLIC, label: "公開する" },
   ];
+
+  const cancel = async () => {
+    const imageUrl = watch("imageUrl");
+    if (imageUrl) {
+      deleteImageUrls.push(imageUrl);
+    }
+    reset();
+    await deleteImage({
+      imageUrls: deleteImageUrls,
+    });
+    push(`/recipes`);
+    return;
+  };
   return {
     register,
     control,
     handleSubmit: handleSubmit(onSubmit),
     errors,
     isSubmitting,
-    reset,
     watch,
     setValue,
     categories,
     setDeleteImageUrls,
     options,
+    cancel,
   };
 };
