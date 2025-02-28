@@ -87,6 +87,11 @@ export const useAddAritcleForm = () => {
     push(`/malts`);
     return;
   };
+  type Option = { value: Status; label: string };
+  const options: Option[] = [
+    { value: Status.DRAFT, label: "下書き保存" },
+    { value: Status.PENDING_APPROVAL, label: "投稿申請" },
+  ];
 
   return {
     register,
@@ -98,5 +103,6 @@ export const useAddAritcleForm = () => {
     setValue,
     setDeleteImageUrls,
     cancel,
+    options,
   };
 };
