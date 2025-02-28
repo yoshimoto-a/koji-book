@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { subscribeUser } from "./actions";
+import { subscribeUser } from "../_utils/actions";
 import { api } from "../_utils/api";
 import { PostRequest } from "../_types/PushSubscription/PostRequest";
 import { useUser } from "./useUser";
