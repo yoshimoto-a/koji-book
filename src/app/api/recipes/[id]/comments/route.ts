@@ -4,7 +4,7 @@ import { buildError } from "@/app/api/_utils/buildError";
 import { getCurrentUser } from "@/app/api/_utils/getCurrentUser";
 import { PostRequest } from "@/app/_types/Recipe/Comment/PostRequest";
 import { GmailService } from "@/app/api/_cervices/google/GmailService";
-import { WebPush } from "@/app/api/_cervices/webPush/PushNotificationService";
+import { WebPush } from "@/app/api/_services/webPush/PushNotificationService";
 interface Props {
   params: Promise<{
     id: string;
