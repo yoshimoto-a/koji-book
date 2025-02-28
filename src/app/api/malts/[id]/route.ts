@@ -3,6 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { IndexResponse } from "@/app/_types/Malt/IndexResponse";
 import { supabase } from "@/app/_utils/supabase";
 import { PutRequest } from "@/app/_types/Malt/PutRequest";
+import { Status } from "@prisma/client";
+import { GmailService } from "../../_services/google/GmailService";
+import { WebPush } from "../../_services/webPush/PushNotificationService";
 
 interface Props {
   params: Promise<{
@@ -110,7 +113,11 @@ export const PUT = async (request: NextRequest, { params }: Props) => {
   const prisma = await buildPrisma();
   try {
     const { id } = await params;
-    console.log(request);
+
+    const beforeArticle = await prisma.maltArticle.findUnique({
+      where: { id },
+    });
+
     const {
       maltRole,
       material,
@@ -135,6 +142,24 @@ export const PUT = async (request: NextRequest, { params }: Props) => {
         imageUrl,
       },
     });
+
+    if (
+      status === Status.PENDING_APPROVAL && // 更新後が PENDING_APPROVAL で
+      beforeArticle?.status !== Status.PENDING_APPROVAL // 更新前が PENDING_APPROVAL ではない場合
+    ) {
+      const user = await prisma.user.findFirst({
+        where: {
+          role: "ADMIN",
+        },
+      });
+      if (!user)
+        return NextResponse.json({ message: "success!" }, { status: 200 });
+      const gmail = new GmailService(user.id, user.name);
+      await gmail.sendMessage();
+      //プッシュ通知する
+      const webPush = new WebPush(user.id, user.name, undefined, true);
+      await webPush.sendPushNotification();
+    }
     return NextResponse.json({ message: "success!" }, { status: 200 });
   } catch (e) {
     if (e instanceof Error) {

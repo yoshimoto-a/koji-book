@@ -12,12 +12,12 @@ const SCOPES = ["https://www.googleapis.com/auth/gmail.send"];
 export class GmailService {
   private userId: string;
   private currentUserName: string;
-  private article: RecipeArticle;
+  private article?: RecipeArticle;
   private reply?: boolean;
   constructor(
     userId: string,
     currentUserName: string,
-    article: RecipeArticle,
+    article: RecipeArticle | undefined = undefined,
     reply: boolean = false
   ) {
     this.userId = userId;
@@ -38,7 +38,6 @@ export class GmailService {
     const gmail = google.gmail({ version: "v1", auth: oauth2Client });
     const base64EncodedEmail = this.createMessage({
       to: email,
-      from: this.currentUserName,
       url: process.env.NEXT_PUBLIC_APP_BASE_URL || "",
     });
     const res = await gmail.users.messages.send({
@@ -81,25 +80,21 @@ export class GmailService {
     oauth2Client.setCredentials({ access_token: token });
     return oauth2Client;
   }
-  private createMessage({
-    to,
-    from,
-    url,
-  }: {
-    to: string;
-    from: string;
-    url: string;
-  }) {
-    const subject = "【麹帳】新着コメントがあります🎵";
+  private createMessage({ to, url }: { to: string; url: string }) {
+    const subject = this.article
+      ? "【麹帳】新着コメントがあります🎵"
+      : "申請があります";
     const encodedSubject = `=?UTF-8?B?${Buffer.from(subject).toString(
       "base64"
     )}?=`;
-    const content = `${
-      this.reply
-        ? `『${this.article.title}』の投稿へのコメントに${from}さんから返信がありました。`
-        : `『${this.article.title}』の投稿に${from}さんからコメントがありました。`
-    }
-    \nログインして確認してください！\n\n${url}`;
+    const content = this.article
+      ? `${
+          this.reply
+            ? `『${this.article.title}』の投稿へのコメントに${this.currentUserName}さんから返信がありました。`
+            : `『${this.article.title}』の投稿に${this.currentUserName}さんからコメントがありました。`
+        }
+    \nログインして確認してください！\n\n${url}`
+      : `麹調味料レシピの申請があります`;
 
     const email = [
       "From: dev.kojibook@gmail.com",
