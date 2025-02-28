@@ -5,6 +5,9 @@ import { PostRequest } from "@/app/_types/Malts/PostRequest";
 import { getCurrentUser } from "../_utils/getCurrentUser";
 import { IndexResponse } from "@/app/_types/Malts/IndexResponse";
 import { supabase } from "@/app/_utils/supabase";
+import { Status } from "@prisma/client";
+import { GmailService } from "../_services/google/GmailService";
+import { WebPush } from "../_services/webPush/PushNotificationService";
 export const POST = async (request: NextRequest) => {
   const prisma = await buildPrisma();
   const {
@@ -34,6 +37,20 @@ export const POST = async (request: NextRequest) => {
         imageUrl,
       },
     });
+    if (status === Status.PENDING_APPROVAL) {
+      const user = await prisma.user.findFirst({
+        where: {
+          role: "ADMIN",
+        },
+      });
+      if (!user) return;
+      const gmail = new GmailService(user.id, user.name);
+      await gmail.sendMessage();
+      //プッシュ通知する
+      const webPush = new WebPush(user.id, user.name, undefined, true);
+
+      await webPush.sendPushNotification();
+    }
 
     return NextResponse.json(
       {

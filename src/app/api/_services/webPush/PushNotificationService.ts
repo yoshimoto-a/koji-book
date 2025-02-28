@@ -10,12 +10,12 @@ import webpush from "@/app/_utils/webPushConfig";
 export class WebPush {
   private userId: string;
   private currentUserName: string;
-  private article: RecipeArticle;
+  private article?: RecipeArticle;
   private reply?: boolean;
   constructor(
     userId: string,
     currentUserName: string,
-    article: RecipeArticle,
+    article: RecipeArticle | undefined = undefined,
     reply: boolean = false
   ) {
     this.userId = userId;
@@ -34,7 +34,9 @@ export class WebPush {
       await webpush.sendNotification(
         subscription,
         JSON.stringify({
-          title: "【麹帳】新着コメントがあります🎵",
+          title: this.article
+            ? "【麹帳】新着コメントがあります🎵"
+            : "申請があります",
           body: message,
           icon: "/koji.png",
         })
@@ -47,6 +49,7 @@ export class WebPush {
   }
 
   private async createMessage() {
+    if (!this.article) return `麹調味料レシピの申請があります`;
     return this.reply
       ? `『${this.article.title}』の投稿へのコメントに${this.currentUserName}さんから返信がありました。`
       : `『${this.article.title}』の投稿に${this.currentUserName}さんからコメントがありました。`;
