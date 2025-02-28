@@ -47,11 +47,9 @@ export class WebPush {
   }
 
   private async createMessage() {
-    const message = this.reply
+    return this.reply
       ? `『${this.article.title}』の投稿へのコメントに${this.currentUserName}さんから返信がありました。`
       : `『${this.article.title}』の投稿に${this.currentUserName}さんからコメントがありました。`;
-
-    return message;
   }
 
   private async getSubscription() {
