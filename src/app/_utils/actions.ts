@@ -1,7 +1,7 @@
 "use server";
 
 import { PushSubscription } from "web-push";
-import webpush from "../_utils/webPushConfig";
+import webpush from "./webPushConfig";
 
 let subscription: PushSubscription | null = null;
 
