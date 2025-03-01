@@ -116,7 +116,7 @@ export const ArticleForm: React.FC = () => {
 
       <div className="flex gap-2 flex-col">
         <Button type="submit">保存</Button>
-        <Button type="button" onClick={cancel}>
+        <Button type="button" variant="light" onClick={cancel}>
           キャンセル
         </Button>
       </div>

@@ -109,7 +109,7 @@ export const ArticleForm: React.FC<Props> = ({ data }) => {
       </div>
 
       <Button type="submit">保存</Button>
-      <Button type="button" onClick={cancel}>
+      <Button type="button" variant="light" onClick={cancel}>
         キャンセル
       </Button>
     </form>
