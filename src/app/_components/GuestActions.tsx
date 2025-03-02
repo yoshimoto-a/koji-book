@@ -19,7 +19,7 @@ export const GuestActions: React.FC = () => {
         <div className="text-xs">サインアップ</div>
       </Link>
       <button
-        onClick={signIn}
+        onClick={async () => await signIn()}
         type="button"
         className="flex flex-col gap-1 items-center"
       >

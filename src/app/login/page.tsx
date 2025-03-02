@@ -3,11 +3,13 @@ import { Form } from "../_components/Form";
 import { Input } from "@/app/_components/Input";
 import { Button } from "@/app/_components/Button";
 import { useLoginFrom } from "./_hooks/useLoginForm";
+import { Toaster } from "react-hot-toast";
 export default function Page() {
   const { register, handleSubmit, errors, isSubmitting } = useLoginFrom();
 
   return (
     <Form onSubmit={handleSubmit} title="ログイン">
+      <Toaster />
       <div className="flex flex-col gap-3">
         <Input
           label="メールアドレス"
