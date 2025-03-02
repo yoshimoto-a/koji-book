@@ -4,12 +4,13 @@ import { useSupabaseSession } from "../_hooks/useSupabaseSession";
 import { UserActions } from "./UserActions";
 import { GuestActions } from "./GuestActions";
 import Link from "next/link";
-
+import { Toaster } from "react-hot-toast";
 export const Header: React.FC = () => {
   const { session } = useSupabaseSession();
 
   return (
     <header className="fixed top-0 bg-light_beige/70 w-full h-[70px] z-10">
+      <Toaster />
       <div className="h-full max-w-md mx-auto flex justify-between items-center px-5">
         <Link href={"/"}>
           <Image
