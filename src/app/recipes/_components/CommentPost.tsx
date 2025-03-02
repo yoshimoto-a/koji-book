@@ -37,7 +37,7 @@ export const CommentPost: React.FC = () => {
           value={comment}
           disabled={isSubmitting}
           onChange={e => setComment(e.target.value)}
-          className="w-full border-[1px]"
+          className="pl-2 w-full border-[1px] border-dark_brown placeholder:text-dark_brown rounded-md"
           placeholder="コメントを入力"
         />
         <button
