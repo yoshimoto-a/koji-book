@@ -25,7 +25,7 @@ export const ArticleForm: React.FC<Props> = ({ data }) => {
     cancel,
     options,
   } = useEditAritcleForm({ data: data.maltArticle });
-
+  console.log(errors);
   return (
     <form onSubmit={handleSubmit} className="pt-10 flex flex-col gap-5">
       <RecipeImage
@@ -42,7 +42,7 @@ export const ArticleForm: React.FC<Props> = ({ data }) => {
         placeholder="タイトル名を入力"
         type="text"
         errors={errors.title}
-        register={register("title")}
+        {...register("title")}
       />
       <Textarea
         label="材料"
@@ -50,7 +50,7 @@ export const ArticleForm: React.FC<Props> = ({ data }) => {
         id="material"
         placeholder="①米麹 100g・・・"
         errors={errors.material}
-        register={register("material")}
+        {...register("material")}
       />
       <Textarea
         label="作り方"
@@ -58,7 +58,7 @@ export const ArticleForm: React.FC<Props> = ({ data }) => {
         id="tips"
         placeholder="①材料をブレンダー等ですりおろす・・・"
         errors={errors.tips}
-        register={register("tips")}
+        {...register("tips")}
       />
       <Input
         label="発酵温度"
@@ -68,7 +68,11 @@ export const ArticleForm: React.FC<Props> = ({ data }) => {
         placeholder="60"
         type="number"
         errors={errors.temperature}
-        register={register("temperature")}
+        {...register("temperature")}
+        onChange={e => {
+          const v = Number(e.target.value.replace(/^0+/, ""));
+          setValue("temperature", v);
+        }}
       />
       <Input
         label="発酵時間"
@@ -78,7 +82,12 @@ export const ArticleForm: React.FC<Props> = ({ data }) => {
         placeholder="8"
         type="number"
         errors={errors.time}
-        register={register("time")}
+        {...register("time")}
+        onChange={e => {
+          const value = e.target.value;
+          const v = value ? Number(value.replace(/^0+/, "")) : 0;
+          setValue("time", v);
+        }}
       />
       <div>
         <label htmlFor="status">ステータス</label>

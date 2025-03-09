@@ -30,7 +30,7 @@ export const useEditAritcleForm = ({ data }: { data: RecipeArticle }) => {
     tips: z.string().min(1, { message: "必須です" }),
     material: z.string().min(1, { message: "必須です" }),
     status: z.nativeEnum(Status, { required_error: "必須です" }),
-    imageUrl: z.string().nullable(),
+    imageUrl: z.string().nullable().optional(),
     maltArticleId: z.string(),
   });
   const {

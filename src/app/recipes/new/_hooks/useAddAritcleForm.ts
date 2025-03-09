@@ -10,7 +10,7 @@ import { useCategories } from "../../_hooks/useCategories";
 import { useEffect, useState } from "react";
 import { deleteImage } from "@/app/_utils/deleteImage";
 
-interface Form {
+export interface Form {
   title: string;
   tips: string;
   material: string;
@@ -18,6 +18,15 @@ interface Form {
   maltArticleId: string;
   imageUrl: string | null;
 }
+
+const defaultValues = {
+  material: "",
+  tips: "",
+  title: "",
+  status: Status.DRAFT,
+  maltArticleId: "",
+  imageUrl: null,
+};
 export const useAddAritcleForm = () => {
   const { push } = useRouter();
   const { data } = useCategories();
@@ -31,7 +40,7 @@ export const useAddAritcleForm = () => {
     material: z.string().min(1, { message: "必須です" }),
     status: z.nativeEnum(Status, { required_error: "必須です" }),
     maltArticleId: z.string(),
-    imageUrl: z.string().nullable(),
+    imageUrl: z.string().nullable().optional(),
   });
   const {
     register,
@@ -44,14 +53,9 @@ export const useAddAritcleForm = () => {
   } = useForm<Form>({
     resolver: zodResolver(schema),
     mode: "onSubmit",
-    defaultValues: {
-      material: "",
-      tips: "",
-      title: "",
-      status: "DRAFT",
-      maltArticleId: data?.maltArticles[0].id,
-    },
+    defaultValues,
   });
+  console.log(errors);
 
   const onSubmit = async (formData: Form) => {
     try {
@@ -66,7 +70,7 @@ export const useAddAritcleForm = () => {
         imageUrl,
       };
       await api.post<PostRequest, { message: string }>(`/api/recipes`, body);
-      reset();
+      reset(defaultValues);
       await deleteImage({ imageUrls: deleteImageUrls });
       push(`/recipes`);
     } catch (error) {
@@ -91,7 +95,7 @@ export const useAddAritcleForm = () => {
     if (imageUrl) {
       deleteImageUrls.push(imageUrl);
     }
-    reset();
+    reset(defaultValues);
     await deleteImage({
       imageUrls: deleteImageUrls,
     });

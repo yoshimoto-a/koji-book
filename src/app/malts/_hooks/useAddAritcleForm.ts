@@ -23,12 +23,15 @@ export const useAddAritcleForm = () => {
 
   const schema = z.object({
     title: z.string().min(1, { message: "必須です" }),
-    time: z.number().min(1, { message: "必須です" }),
+    time: z.number().int().min(0, { message: "0以上の数値を入力してください" }),
     tips: z.string().min(1, { message: "必須です" }),
     material: z.string().min(1, { message: "必須です" }),
-    temperature: z.number().min(1, { message: "必須です" }),
+    temperature: z
+      .number()
+      .int()
+      .min(0, { message: "0以上の数値を入力してください" }),
     status: z.nativeEnum(Status, { required_error: "必須です" }),
-    imageUrl: z.string().nullable(),
+    imageUrl: z.string().nullable().optional(),
   });
   const {
     register,
@@ -48,7 +51,7 @@ export const useAddAritcleForm = () => {
       time: 8,
       tips: "",
       title: "",
-      imageUrl: "",
+      imageUrl: null,
     },
   });
 
@@ -59,11 +62,11 @@ export const useAddAritcleForm = () => {
       const body: PostRequest = {
         maltRole: "MAIN",
         title,
-        time: Number(time),
+        time,
         tips,
         material,
         status,
-        temperature: Number(temperature),
+        temperature,
         imageUrl,
       };
       await api.post<PostRequest, { message: string }>("/api/malts", body);
