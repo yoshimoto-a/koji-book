@@ -38,7 +38,7 @@ export const ArticleForm: React.FC = () => {
         placeholder="タイトル名を入力"
         type="text"
         errors={errors.title}
-        register={register("title")}
+        {...register("title")}
       />
       <Textarea
         label="材料"
@@ -46,7 +46,7 @@ export const ArticleForm: React.FC = () => {
         id="material"
         placeholder="①米麹 100g・・・"
         errors={errors.material}
-        register={register("material")}
+        {...register("material")}
       />
       <Textarea
         label="作り方"
@@ -54,7 +54,7 @@ export const ArticleForm: React.FC = () => {
         id="tips"
         placeholder="①材料をブレンダー等ですりおろす・・・"
         errors={errors.tips}
-        register={register("tips")}
+        {...register("tips")}
       />
       <Input
         label="発酵温度"
@@ -64,7 +64,7 @@ export const ArticleForm: React.FC = () => {
         placeholder="60"
         type="number"
         errors={errors.temperature}
-        register={register("temperature")}
+        {...register("temperature")}
       />
       <Input
         label="発酵時間"
@@ -74,7 +74,7 @@ export const ArticleForm: React.FC = () => {
         placeholder="8"
         type="number"
         errors={errors.time}
-        register={register("time")}
+        {...register("time")}
       />
       <div>
         <label htmlFor="status">ステータス</label>
