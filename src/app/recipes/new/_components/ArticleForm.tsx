@@ -6,7 +6,7 @@ import { Textarea } from "@/app/_components/Textarea";
 import Select from "react-select";
 import { Controller } from "react-hook-form";
 import { RecipeImage } from "@/app/_components/RecipeImage";
-
+import { TipsArea } from "./TipsArea";
 export const ArticleForm: React.FC = () => {
   const {
     register,
@@ -68,7 +68,7 @@ export const ArticleForm: React.FC = () => {
         placeholder="タイトル名を入力"
         type="text"
         errors={errors.title}
-        register={register("title")}
+        {...register("title")}
       />
       <Textarea
         label="材料"
@@ -76,15 +76,14 @@ export const ArticleForm: React.FC = () => {
         id="material"
         placeholder="・・・"
         errors={errors.material}
-        register={register("material")}
+        {...register("material")}
       />
-      <Textarea
-        label="作り方"
-        disabled={isSubmitting}
-        id="tips"
-        placeholder="①・・・"
-        errors={errors.tips}
-        register={register("tips")}
+      <TipsArea
+        value={watch("tips")}
+        setValue={val => setValue("tips", val)}
+        error={errors.tips}
+        isSubmitting={isSubmitting}
+        register={register}
       />
       <div>
         <label htmlFor="status">ステータス</label>

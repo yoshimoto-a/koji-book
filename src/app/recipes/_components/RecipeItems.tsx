@@ -12,6 +12,7 @@ import Image from "next/image";
 import { Paginate } from "@/app/_components/Pagenate";
 import { useSearchParamsState } from "../_hooks/useSearchParamsState";
 import { SearchForm } from "@/app/_components/SearchForm";
+import { formatSteps } from "@/app/_utils/formatSteps";
 interface Props {
   recipeData: IndexResponse;
 }
@@ -76,7 +77,9 @@ export const RecipeItems: React.FC<Props> = ({ recipeData }) => {
 
           <div className="">
             <h3>〇作り方</h3>
-            <div className="line-clamp-1">{recipeArticle.article.tips}</div>
+            <div className="line-clamp-1">
+              {formatSteps(recipeArticle.article.tips)}
+            </div>
           </div>
           <Button
             type="button"

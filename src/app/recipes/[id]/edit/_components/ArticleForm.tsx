@@ -9,6 +9,7 @@ import { Controller } from "react-hook-form";
 import { Status } from "@prisma/client";
 import { IndexResponse } from "@/app/_types/Recipe/IndexResponse";
 import { RecipeImage } from "@/app/_components/RecipeImage";
+import { TipsArea } from "@/app/recipes/new/_components/TipsArea";
 
 type Option = { value: Status; label: string };
 interface Props {
@@ -75,7 +76,7 @@ export const ArticleForm: React.FC<Props> = ({ data }) => {
         placeholder="タイトル名を入力"
         type="text"
         errors={errors.title}
-        register={register("title")}
+        {...register("title")}
       />
       <Textarea
         label="材料"
@@ -83,15 +84,15 @@ export const ArticleForm: React.FC<Props> = ({ data }) => {
         id="material"
         placeholder="①米麹 100g・・・"
         errors={errors.material}
-        register={register("material")}
+        {...register("material")}
       />
-      <Textarea
-        label="作り方"
-        disabled={isSubmitting}
-        id="tips"
-        placeholder="①材料をブレンダー等ですりおろす・・・"
-        errors={errors.tips}
-        register={register("tips")}
+      <TipsArea
+        value={watch("tips")}
+        setValue={val => setValue("tips", val)}
+        error={errors.tips}
+        isSubmitting={isSubmitting}
+        register={register}
+        edit
       />
       <div>
         <label htmlFor="status">ステータス</label>

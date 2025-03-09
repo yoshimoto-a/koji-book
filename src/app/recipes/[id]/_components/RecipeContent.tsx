@@ -13,6 +13,8 @@ import Image from "next/image";
 import { getStatusLabel } from "@/app/_utils/getStatusLabel";
 import { CommentPost } from "../../_components/CommentPost";
 import { Comment } from "./Comment";
+import { formatSteps } from "@/app/_utils/formatSteps";
+
 interface Props {
   initialValue: IndexResponse;
 }
@@ -37,6 +39,7 @@ export const RecipeContent: React.FC<Props> = ({ initialValue }) => {
   const isOwnPost =
     userData.user &&
     userData.user.recipeArticles.find(article => article.id === id);
+
   return (
     <div>
       <div className="flex justify-between pb-5">
@@ -106,7 +109,9 @@ export const RecipeContent: React.FC<Props> = ({ initialValue }) => {
         </div>
         <div>
           <h3 className="text-xl pb-2">〇手順</h3>
-          <div className="whitespace-pre-wrap">{data.recipeArticle.tips}</div>
+          <div className="whitespace-pre-wrap">
+            {formatSteps(data.recipeArticle.tips)}
+          </div>
         </div>
       </div>
       {session && <CommentPost />}
