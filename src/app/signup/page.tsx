@@ -17,7 +17,7 @@ export default function Page() {
           placeholder="ユーザーネーム"
           type="text"
           errors={errors.name}
-          register={register("name")}
+          {...register("name")}
         />
         <Input
           label="メールアドレス"
@@ -27,7 +27,7 @@ export default function Page() {
           placeholder="メールアドレス"
           type="email"
           errors={errors.email}
-          register={register("email")}
+          {...register("email")}
         />
         <Input
           label="パスワード"
@@ -37,7 +37,7 @@ export default function Page() {
           placeholder="パスワード"
           type="password"
           errors={errors.password}
-          register={register("password")}
+          {...register("password")}
         />
         <div className="mt-4 h-9">
           <Button type="submit">登録</Button>

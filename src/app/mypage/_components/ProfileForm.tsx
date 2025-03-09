@@ -80,7 +80,7 @@ export const ProfileForm: React.FC = () => {
         placeholder="ユーザーネーム"
         type="text"
         errors={errors.name}
-        register={register("name")}
+        {...register("name")}
       />
       <Input
         label="メールアドレス"
@@ -90,7 +90,7 @@ export const ProfileForm: React.FC = () => {
         placeholder="メールアドレス"
         type="email"
         errors={errors.email}
-        register={register("email")}
+        {...register("email")}
       />
       <p className="text-sm pb-2">
         メールアドレスはログイン時のメールアドレスです。

@@ -21,15 +21,17 @@ interface Form {
 export const useEditAritcleForm = ({ data }: { data: MaltArticle }) => {
   const { push } = useRouter();
   const [deleteImageUrls, setDeleteImageUrls] = useState<string[]>([]);
-
   const schema = z.object({
     title: z.string().min(1, { message: "必須です" }),
-    time: z.number().min(1, { message: "必須です" }),
+    time: z.number().int().min(0, { message: "0以上の数値を入力してください" }),
     tips: z.string().min(1, { message: "必須です" }),
     material: z.string().min(1, { message: "必須です" }),
-    temperature: z.number().min(1, { message: "必須です" }),
+    temperature: z
+      .number()
+      .int()
+      .min(0, { message: "0以上の数値を入力してください" }),
     status: z.nativeEnum(Status, { required_error: "必須です" }),
-    imageUrl: z.string().nullable(),
+    imageUrl: z.string().nullable().optional(),
   });
   const {
     register,
@@ -52,7 +54,6 @@ export const useEditAritcleForm = ({ data }: { data: MaltArticle }) => {
       imageUrl: data.imageUrl,
     },
   });
-
   const onSubmit = async (formData: Form) => {
     try {
       const { material, temperature, time, tips, title, status, imageUrl } =
@@ -60,11 +61,11 @@ export const useEditAritcleForm = ({ data }: { data: MaltArticle }) => {
       const body: PostRequest = {
         maltRole: data.maltRole,
         title,
-        time: Number(time),
+        time,
         tips,
         material,
         status,
-        temperature: Number(temperature),
+        temperature,
         imageUrl,
       };
       await api.put<PutRequest, { message: string }>(
