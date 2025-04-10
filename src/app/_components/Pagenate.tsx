@@ -30,7 +30,7 @@ export const Paginate: React.FC<Props> = ({
         previousLinkClassName={`${baseClassName} mr-4 ml-3`}
         nextLinkClassName={`${baseClassName} ml-4`}
         pageLinkClassName={baseClassName}
-        activeLinkClassName={"bg-gray_bg"}
+        activeLinkClassName={"bg-dark_brown text-white"}
         forcePage={currentPage}
       />
     </div>
