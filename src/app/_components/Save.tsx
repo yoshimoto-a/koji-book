@@ -49,7 +49,7 @@ export const Save = <T,>({
       </button>
       <div>{savesCount}</div>
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <div className="bg-white py-10 px-5 rounded-md flex flex-col gap-5">
+        <div className="bg-white py-10 px-3 rounded-md flex flex-col gap-5">
           <p className="text-xl">
             レシピの保存はログインすると使える機能です。
           </p>
