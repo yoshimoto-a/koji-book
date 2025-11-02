@@ -5,7 +5,6 @@ import { useEffect } from "react";
 import { Like } from "@/app/_components/Like";
 import { Save } from "@/app/_components/Save";
 import { useRouter } from "next/navigation";
-import { Button } from "@/app/_components/Button";
 import { useRecipes } from "../_hooks/useRecipes";
 import { Malt } from "./Malt";
 import Image from "next/image";
@@ -13,6 +12,7 @@ import { Paginate } from "@/app/_components/Pagenate";
 import { useSearchParamsState } from "../_hooks/useSearchParamsState";
 import { SearchForm } from "@/app/_components/SearchForm";
 import { formatSteps } from "@/app/_utils/formatSteps";
+import Link from "next/link";
 interface Props {
   recipeData: IndexResponse;
 }
@@ -81,14 +81,12 @@ export const RecipeItems: React.FC<Props> = ({ recipeData }) => {
               {formatSteps(recipeArticle.article.tips)}
             </div>
           </div>
-          <Button
-            type="button"
-            onClick={() => {
-              push(`recipes/${recipeArticle.article.id}`);
-            }}
+          <Link
+            className="bg-dark_brown text-white hover:bg-white hover:text-dark_brown"
+            href={`/recipes/${recipeArticle.article.id}`}
           >
             材料・作り方を見る
-          </Button>
+          </Link>
         </div>
       ))}
       <div className="mt-4">
