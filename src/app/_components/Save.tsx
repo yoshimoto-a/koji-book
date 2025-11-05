@@ -53,7 +53,7 @@ export const Save = <T,>({
           <p className="text-xl">
             レシピの保存はログインすると使える機能です。
           </p>
-          <p>ユーザー登録がまだの方はユーザー登録をお願いします。</p>
+          <p>まだの方はユーザー登録をお願いします。</p>
           <Button
             type="button"
             onClick={() => push("/signup")}
