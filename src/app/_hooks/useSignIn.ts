@@ -20,7 +20,7 @@ export const useSignIn = () => {
     });
     toast.success("ログインしました");
     if (error) {
-      alert(`保存済のログイン情報ではログイン出来ませんでした。${error}`);
+      alert(`ログイン出来ませんでした。${error}`);
       push("login");
     }
   }, [push, email, password]);
