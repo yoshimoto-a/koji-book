@@ -11,9 +11,11 @@ export const UserActions: React.FC = () => {
 
   if (!session) return null;
 
+  if (!data) return <div>Loading...</div>;
+  
   return (
     <div className="flex justify-start items-center gap-3">
-      {data?.user?.role === "ADMIN" && (
+      {data.user?.role === "ADMIN" && (
         <Link href={"/admin"} className="flex flex-col gap-1 items-center">
           <FontAwesomeIcon
             icon={faGear}
