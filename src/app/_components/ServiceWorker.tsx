@@ -26,7 +26,7 @@ export const ServiceWorker: React.FC = () => {
         >
           <FontAwesomeIcon className="text-[#ACAAA9]" icon={faXmark} />
         </button>
-        <p>コメントが届いたらプッシュを受け取ることが出来ます！</p>
+        <p>コメントが届いたらプッシュ通知を受け取ることが出来ます！</p>
         <div className="w-full pt-2">
           <Button onClick={registerServiceWorker} disabled={isSubmitting}>
             受け取る
