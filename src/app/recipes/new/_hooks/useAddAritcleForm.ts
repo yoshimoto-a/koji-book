@@ -55,7 +55,6 @@ export const useAddAritcleForm = () => {
     mode: "onSubmit",
     defaultValues,
   });
-  console.log(errors);
 
   const onSubmit = async (formData: Form) => {
     try {
