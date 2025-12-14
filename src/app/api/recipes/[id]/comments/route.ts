@@ -63,7 +63,6 @@ export const POST = async (request: NextRequest, { params }: Props) => {
       { status: 200 }
     );
   } catch (e) {
-    console.log(e);
     return buildError(e);
   }
 };
