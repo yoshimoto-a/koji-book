@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 
 export const useSearchParamsState = () => {
   const searchParams = useSearchParams();
-  const page = parseInt(searchParams?.get("page") || "0", 10);
+  const page = parseInt(searchParams?.get("page") || "0");
   const keyword = searchParams?.get("keyword") || "";
 
   const [currentPage, setCurrentPage] = useState(page);
