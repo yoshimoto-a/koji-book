@@ -31,8 +31,9 @@ export const RecipeItems: React.FC<Props> = ({ recipeData }) => {
     if (session) mutate();
   }, [session, mutate]);
 
-  if (!data) return <div>読込み中...</div>;
   if (error) return <div>エラー が発生しました</div>;
+  if (!data) return <div>読込み中...</div>;
+
 
   return (
     <div className="flex flex-col gap-3">
