@@ -14,14 +14,14 @@ import { useSearchParamsState } from "../_hooks/useSearchParamsState";
 import { SearchForm } from "@/app/_components/SearchForm";
 import { formatSteps } from "@/app/_utils/formatSteps";
 interface Props {
-  recipeData: IndexResponse;
+  initialValue: IndexResponse;
 }
-export const RecipeItems: React.FC<Props> = ({ recipeData }) => {
+export const RecipeItems: React.FC<Props> = ({ initialValue }) => {
   const { currentPage, setCurrentPage, searchKeyword, setSearchKeyword } =
     useSearchParamsState();
 
   const { data, error, mutate } = useRecipes({
-    initialValue: recipeData,
+    initialValue,
     searchKeyword,
     currentPage,
   });
