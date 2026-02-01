@@ -7,8 +7,8 @@ import { Contents } from "./_components/Contents";
 export default function MyPage() {
   const { data, error } = useSaves();
   const [active, setActive] = useState<Tab[]>(["malts", "recipes"]);
-  if (!data) return <div>読込み中...</div>;
   if (error) return <div>エラー が発生しました</div>;
+  if (!data) return <div>読込み中...</div>;
   return (
     <div className="max-w-md mx-auto py-10 px-5">
       <h2 className="text-xl pb-5">お気に入り登録したレシピ一覧</h2>
