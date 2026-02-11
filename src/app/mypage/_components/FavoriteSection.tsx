@@ -7,8 +7,8 @@ import { Loading } from "./Loading";
 export const FavoriteSection: React.FC = () => {
   const { data, error } = useSaves();
   const { push } = useRouter();
-  if (!data) return <Loading />;
   if (error) return <div>エラーが発生しました</div>;
+  if (!data) return <Loading />;
   return (
     <div className="flex flex-col gap-5">
       <div>
